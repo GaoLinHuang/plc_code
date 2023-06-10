@@ -109,7 +109,7 @@ namespace PipettingCode.Services
             });
         }
 
-        public void StopProcess()
+        public void StopCurrentProcess()
         {
             _isRunning = false;
         }

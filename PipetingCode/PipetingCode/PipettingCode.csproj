@@ -90,6 +90,10 @@
       <DependentUpon>PipeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\PipeView\PipeViewModel.cs" />
+    <Compile Include="Views\ProcessExecute\ProcessExecuteView.xaml.cs">
+      <DependentUpon>ProcessExecuteView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ProcessExecute\ProcessExecuteViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -107,6 +111,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PipeView\PipeView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ProcessExecute\ProcessExecuteView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

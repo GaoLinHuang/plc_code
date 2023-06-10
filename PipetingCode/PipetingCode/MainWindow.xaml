@@ -6,25 +6,22 @@
         xmlns:PipettingCode="clr-namespace:PipettingCode"
         xmlns:views="clr-namespace:PipettingCode.Views"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800" WindowState="Maximized">
     <Window.DataContext>
         <PipettingCode:MainWindowViewModel />
     </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="355" />
+            <RowDefinition Height="auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200" />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-        <views:PipeView />
-
-       <StackPanel Grid.Row="1">
-            <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}"></ComboBox>
-           <Button Margin="2" Height="35" Width="80" Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
-           <Button Margin="2" Height="35" Width="80" Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
-       </StackPanel>
+        <!--基础操作-->
+        <views:PipeView  Margin="4"/>
+        <!--执行流程-->
+        <views:ProcessExecuteView Grid.Row="1"  Margin="4"/>
     </Grid>
 </Window>
