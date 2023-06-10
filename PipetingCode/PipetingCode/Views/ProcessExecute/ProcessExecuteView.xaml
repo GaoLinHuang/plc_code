@@ -10,7 +10,7 @@
         <local:ProcessExecuteViewModel/>
     </UserControl.DataContext>
     <StackPanel Grid.Row="1">
-        <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}"></ComboBox>
+        <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}" SelectedIndex="0"></ComboBox>
         <Button Margin="2" Height="35" Width="80" Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
         <Button Margin="2" Height="35" Width="80" Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
     </StackPanel>
