@@ -7,26 +7,53 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext>
-        <local:PipeViewModel></local:PipeViewModel>
+        <local:PipeService></local:PipeService>
     </UserControl.DataContext>
     <StackPanel HorizontalAlignment="Center">
-       <Grid>
-           <Grid.RowDefinitions>
-               <RowDefinition/>
-               <RowDefinition/>
-           </Grid.RowDefinitions>
-           <Grid.ColumnDefinitions>
-               <ColumnDefinition Width="30"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="30"/>
                 <ColumnDefinition/>
-           </Grid.ColumnDefinitions>
+            </Grid.ColumnDefinitions>
 
-            <TextBlock Text="IP：" Grid.Row="0" Grid.Column="0" Margin="4"/>
+            <!--<TextBlock Text="IP：" Grid.Row="0" Grid.Column="0" Margin="4"/>
             <TextBox Text="{Binding Ip}" Width="100" Grid.Row="0" Grid.Column="1" Margin="4"></TextBox>
 
 
             <TextBlock Text="端口："  Grid.Row="1" Grid.Column="0" Margin="4"/>
-            <TextBox Text="{Binding Port}" Width="100" Grid.Row="1" Grid.Column="1" Margin="4"></TextBox>
-       </Grid>
-        <Button Content="连接" Command="{Binding }" Width="100" Margin="4"></Button>
+            <TextBox Text="{Binding Port}" Width="100" Grid.Row="1" Grid.Column="1" Margin="4"></TextBox>-->
+        </Grid>
+
+        <StackPanel>
+            <Button Content="节点搜索" Command="{Binding ConnectCommand }" Width="100" Margin="4"></Button>
+            <Button Content="初始化加样臂" Command="{Binding InitCommand }" Width="100" Margin="4"></Button>
+            <Button Content="Z轴初始化" Command="{Binding InitZCommand }" Width="100" Margin="4"></Button>
+            <ComboBox ItemsSource="{Binding Steps}" Width="100" SelectedValue="{Binding StepValue}" SelectedIndex="0"></ComboBox>
+            <Button Content="左移X" Command="{Binding MoveXLeftCommand }" Width="100" Margin="4"></Button>
+            <Button Content="右移X" Command="{Binding MoveXRightCommand }" Width="100" Margin="4"></Button>
+            <Button Content="前移Y" Command="{Binding MoveFrontCommand }" Width="100" Margin="4"></Button>
+            <Button Content="后移Y" Command="{Binding MoveBackCommand }" Width="100" Margin="4"></Button>
+            <Button Content="上移Z" Command="{Binding MoveTopCommand }" Width="100" Margin="4"></Button>
+            <Button Content="下移Z" Command="{Binding MoveBottomCommand }" Width="100" Margin="4"></Button>
+            <Button Content="获取坐标信息" Command="{Binding GetPosCommand }" Width="100" Margin="4"></Button>
+            <StackPanel Orientation="Horizontal">
+                <StackPanel Margin="3" Orientation="Horizontal">
+                    <TextBlock Text="X:"/>
+                    <TextBlock Text="{Binding X}"/>
+                </StackPanel>
+                <StackPanel Margin="3" Orientation="Horizontal">
+                    <TextBlock Text="Y:"/>
+                    <TextBlock Text="{Binding Y}"/>
+                </StackPanel >
+                <StackPanel Margin="3" Orientation="Horizontal">
+                    <TextBlock Text="Z:"/>
+                    <TextBlock Text="{Binding Z}"/>
+                </StackPanel>
+            </StackPanel>
+        </StackPanel>
     </StackPanel>
 </UserControl>

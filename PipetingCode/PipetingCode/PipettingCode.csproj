@@ -75,6 +75,7 @@
       <DependentUpon>ExperimentError.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ExperimentError\ExperimentErrorViewModel.cs" />
+    <Compile Include="Views\PipeView\PipeService.cs" />
     <Compile Include="Views\PipeView\PipeView.xaml.cs">
       <DependentUpon>PipeView.xaml</DependentUpon>
     </Compile>

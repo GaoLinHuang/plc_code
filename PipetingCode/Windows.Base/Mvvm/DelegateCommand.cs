@@ -19,11 +19,12 @@ namespace Windows.Base
         public event EventHandler? CanExecuteChanged;
 
         // 使用lambda表达式简写，??说明，当前面的值为空的时候，返回预设的值
-        public bool CanExecute(object? parameter) => parameter != null && (CanExecuteFunc?.Invoke(parameter) ?? true);
+        public bool CanExecute(object? parameter) => true;
+            //parameter != null && (CanExecuteFunc?.Invoke(parameter) ?? true);
 
         public void Execute(object? parameter)
         {
-            if (parameter != null) ExecuteAction?.Invoke(parameter);
+            ExecuteAction?.Invoke(parameter);
         }
 
         public Action<object>? ExecuteAction { get; set; }
