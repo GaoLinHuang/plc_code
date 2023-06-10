@@ -1,10 +1,10 @@
-﻿using PipetitngCode.Views;
+﻿using PipettingCode.Models;
+using PipettingCode.Views;
 using System;
 using System.Collections.ObjectModel;
 using Windows.Base;
-using PipetitngCode.Models;
 
-namespace PipetitngCode.ViewModel
+namespace PipettingCode.ViewModel
 {
     [Serializable]
     public class SampleViewModel : NotifiactionObject
@@ -38,9 +38,9 @@ namespace PipetitngCode.ViewModel
             }
         }
 
-
         // 16 * 6，移液这一边的
         private ObservableCollection<SampleModel> _sample16;
+
         public ObservableCollection<SampleModel> Sample16
         {
             get { return _sample16; }
@@ -86,6 +86,7 @@ namespace PipetitngCode.ViewModel
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
         }
+
         private void Init()
         {
             // 96 * 1，移液
@@ -127,15 +128,14 @@ namespace PipetitngCode.ViewModel
             }
         }
 
-
         private SampleViewModel()
         {
             Init();
         }
+
         public static SampleViewModel GetInstance()
         {
             return _instance;
         }
-
     }
 }

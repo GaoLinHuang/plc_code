@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1BF2989A-7118-4F89-BA1D-925B9287B54A}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>PipetitngCode</RootNamespace>
+    <RootNamespace>PipettingCode</RootNamespace>
     <AssemblyName>PipettingCode</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,6 +37,9 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="PipettingControl, Version=1.0.7.16, Culture=neutral, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Lib\PipettingControl.dll</HintPath>
@@ -67,6 +70,13 @@
     <Compile Include="Common\PipettingParameterBuild.cs" />
     <Compile Include="Models\CheckModel.cs" />
     <Compile Include="Models\SampleModel.cs" />
+    <Compile Include="Services\Config\ConfigInfo.cs" />
+    <Compile Include="Services\Config\ConfigInfoItem.cs" />
+    <Compile Include="Services\WorkProcess\Executes\ExecuteManager.cs" />
+    <Compile Include="Services\WorkProcess\Executes\IExecute.cs" />
+    <Compile Include="Services\WorkProcess\IPipeProcess.cs" />
+    <Compile Include="Services\WorkProcess\PipeProcessFour.cs" />
+    <Compile Include="Services\Config\ProcessConfigService.cs" />
     <Compile Include="ViewModel\CommunicationStateViewModel.cs" />
     <Compile Include="ViewModel\PLCViewModel.cs" />
     <Compile Include="ViewModel\SampleViewModel.cs" />
@@ -120,6 +130,8 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Config\process.json" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

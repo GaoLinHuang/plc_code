@@ -1,14 +1,10 @@
-﻿using PipetitngCode.Views;
-using PipettingCode;
+﻿using PipettingCode.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Base;
 
-namespace PipetitngCode.ViewModel
+namespace PipettingCode.ViewModel
 {
     // 单例模式
     public class CheckViewModel : NotifyBase
@@ -16,7 +12,9 @@ namespace PipetitngCode.ViewModel
         private static CheckViewModel _instance = new();
 
         #region 选中的一项
+
         private int selectedIndex;
+
         public int SelectedIndex
         {
             get { return selectedIndex; }
@@ -30,10 +28,13 @@ namespace PipetitngCode.ViewModel
                 }
             }
         }
-        #endregion
+
+        #endregion 选中的一项
 
         #region 质控选项，创建即选中
+
         private ObservableCollection<CheckModel> _myCheck;
+
         public ObservableCollection<CheckModel> MyCheck
         {
             get { return _myCheck; }
@@ -44,13 +45,17 @@ namespace PipetitngCode.ViewModel
                 Update();
             }
         }
-        #endregion
+
+        #endregion 质控选项，创建即选中
 
         #region 勾选的质控，去掉重复的
+
         public HashSet<int> SelectedItems { get; set; }
-        #endregion
+
+        #endregion 勾选的质控，去掉重复的
 
         #region 当前选择的质控是哪一个
+
         private string _numbers;
 
         public string Numbers
@@ -70,9 +75,11 @@ namespace PipetitngCode.ViewModel
                 }
             }
         }
-        #endregion
+
+        #endregion 当前选择的质控是哪一个
 
         #region 当前保存按钮是否可以按
+
         private bool _CheckSave;
 
         public bool CheckSave
@@ -84,9 +91,11 @@ namespace PipetitngCode.ViewModel
                 RaisePropertyChanged("CheckSave");
             }
         }
-        #endregion
+
+        #endregion 当前保存按钮是否可以按
 
         #region 修改、删除按钮是否能按
+
         private bool _checkDelete = false;
 
         public bool CheckDelete
@@ -98,9 +107,11 @@ namespace PipetitngCode.ViewModel
                 RaisePropertyChanged("CheckDelete");
             }
         }
-        #endregion
+
+        #endregion 修改、删除按钮是否能按
 
         #region 新建按钮是否可按
+
         private bool _CheckNew;
 
         public bool CheckNew
@@ -113,15 +124,18 @@ namespace PipetitngCode.ViewModel
             }
         }
 
-        #endregion
+        #endregion 新建按钮是否可按
 
         #region 命令
+
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand DeleteCommand { get; set; }
         public DelegateCommand ModifyCommand { get; set; }
-        #endregion
+
+        #endregion 命令
 
         #region 更新质控
+
         private void Update()
         {
             //#region 能否开始实验、能否删除、修改
@@ -156,17 +170,18 @@ namespace PipetitngCode.ViewModel
             //}
             //this.CheckNew = this.SelectedItems.Count < 10 ? true : false;
             //#endregion
-
         }
-        #endregion
+
+        #endregion 更新质控
 
         #region 保存质控
+
         private void Save(object parameter)
         {
             #region 输入的质控是否有误
+
             try
             {
-
                 int n = int.Parse(this.Numbers);
                 if (n < 1 || n > 96)
                 {
@@ -189,24 +204,31 @@ namespace PipetitngCode.ViewModel
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
                 return;
             }
-            #endregion
+
+            #endregion 输入的质控是否有误
 
             #region 添加质控
+
             this.MyCheck.Add(new CheckModel()
             {
                 Numbers = Numbers
             });
             this.SelectedIndex = this.MyCheck.Count - 1;
             Update();
-            #endregion
+
+            #endregion 添加质控
 
             #region 保存配置到文件
+
             //MyConfig.SaveConfigFile();
-            #endregion
+
+            #endregion 保存配置到文件
         }
-        #endregion
+
+        #endregion 保存质控
 
         #region 删除质控
+
         private void Delete(object parameter)
         {
             try
@@ -229,15 +251,17 @@ namespace PipetitngCode.ViewModel
             // 保存配置
             //MyConfig.SaveConfigFile();
         }
-        #endregion
+
+        #endregion 删除质控
 
         #region 修改质控
+
         private void Modify(object parameter)
         {
             #region 输入的质控是否有误
+
             try
             {
-
                 int n = int.Parse(this.Numbers);
                 if (n < 1 || n > 96)
                 {
@@ -260,7 +284,9 @@ namespace PipetitngCode.ViewModel
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
                 return;
             }
-            #endregion
+
+            #endregion 输入的质控是否有误
+
             int tmp = this.SelectedIndex;
 
             try
@@ -279,9 +305,11 @@ namespace PipetitngCode.ViewModel
             // 保存配置
             //MyConfig.SaveConfigFile();
         }
-        #endregion
+
+        #endregion 修改质控
 
         #region 构造函数
+
         private CheckViewModel()
         {
             this.SaveCommand = new DelegateCommand();
@@ -296,7 +324,8 @@ namespace PipetitngCode.ViewModel
             MyCheck = new ObservableCollection<CheckModel>();
             this.SelectedItems = new();
         }
-        #endregion
+
+        #endregion 构造函数
 
         public static CheckViewModel GetInstance()
         {

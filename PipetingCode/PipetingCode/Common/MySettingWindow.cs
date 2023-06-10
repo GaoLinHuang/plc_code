@@ -1,12 +1,4 @@
-﻿using PipettingCode;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace PipetitngCode.Views
+﻿namespace PipettingCode.Views
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -16,10 +8,11 @@ namespace PipetitngCode.Views
     public class MySettingWindow
     {
         #region 各种配置、日志文件
+
         public static readonly object _locker = new();
         public static readonly string resultFileName = ".\\result.json";                // 结果
         public static readonly string userFileName = ".\\User.json";                    // 用户
-        public static readonly string configFileName = ".\\MyConfig.json";              // 上一轮的配置 
+        public static readonly string configFileName = ".\\MyConfig.json";              // 上一轮的配置
         public static readonly string PLCConfigName = ".\\PLCConfig.ini";
         public static readonly string DemoConfigName = ".\\demoConfig.ini";
         public static readonly string ErrorLog = ".\\error.log";                         // 错误日志
@@ -30,9 +23,11 @@ namespace PipetitngCode.Views
         public static readonly int SAVERESULTDAYS = 3;                                   // 实验结果保存天数
         public static readonly string SCANDIR = "扫码结果";                              // 扫码结果目录
         public static readonly string PRESSDIR = "气压结果";                             // 气压结果目录
-        #endregion
+
+        #endregion 各种配置、日志文件
 
         #region PLC连接错误弹窗
+
         //public static void ShowPLCErrorWindow()
         //{
         //    if (MainWindowViewModel.GetInstance().PLCErrorWindowIsPrompt == false)
@@ -41,9 +36,11 @@ namespace PipetitngCode.Views
         //        new PLCErrorWindow().ShowDialog();
         //    }
         //}
-        #endregion
+
+        #endregion PLC连接错误弹窗
 
         #region 夹瓶底错误弹窗
+
         //public static void ShowJiaPingErrorWindow()
         //{
         //    if (MainWindowViewModel.GetInstance().JiaPingErrorWindowIsPrompt == false)
@@ -52,9 +49,11 @@ namespace PipetitngCode.Views
         //        new JiaPingMsgWindow().ShowDialog();
         //    }
         //}
-        #endregion
+
+        #endregion 夹瓶底错误弹窗
 
         #region 保存日志，一个是错误日志，一个是运行日志
+
         public static void SaveLog(string fileName, string msg)
         {
             //lock (_locker)
@@ -85,6 +84,7 @@ namespace PipetitngCode.Views
             //    file.Close();
             //}
         }
-        #endregion
+
+        #endregion 保存日志，一个是错误日志，一个是运行日志
     }
 }

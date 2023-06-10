@@ -1,37 +1,37 @@
-﻿using PipetitngCode.Views;
-using PipettingCode;
+﻿using PipettingCode.Views;
 using System;
-using System.Collections.Generic;
 using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 using Windows.Base;
 
-namespace PipetitngCode.ViewModel
+namespace PipettingCode.ViewModel
 {
     public class PLCViewModel : NotifiactionObject
     {
         // 单例模式
-        private readonly static object _locker = new object();
+        private static readonly object _locker = new object();
+
         private static PLCViewModel _instance = new();
 
         #region 串口
+
         private SerialPort MyPort = new SerialPort();
-        #endregion
+
+        #endregion 串口
 
         private PLCViewModel()
         {
             Initial();
         }
+
         public static PLCViewModel GetInstance()
         {
             return _instance;
         }
 
         #region 初始化端口连接
-        void Initial()
+
+        private void Initial()
         {
             try
             {
@@ -47,6 +47,7 @@ namespace PipetitngCode.ViewModel
                 MainWindowViewModel.GetInstance().IsConnect = true;              // PLC连接成功
 
                 #region 更新状态栏
+
                 if (App.Current == null)
                 {
                     return;
@@ -57,11 +58,13 @@ namespace PipetitngCode.ViewModel
                     CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning.png"));
                     CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯成功";
                 }));
-                #endregion
+
+                #endregion 更新状态栏
             }
             catch (Exception ex)
             {
                 #region 更新状态栏
+
                 if (App.Current == null)
                 {
                     return;
@@ -73,21 +76,26 @@ namespace PipetitngCode.ViewModel
                     CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                     MainWindowViewModel.GetInstance().IsConnect = false;           // 没有连接上PLC
                 }));
-                #endregion
+
+                #endregion 更新状态栏
 
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
         }
-        #endregion
+
+        #endregion 初始化端口连接
 
         #region 不发指令给PLC的条件，避免卡顿
+
         private bool NoRead()
         {
             return MainWindowViewModel.GetInstance().KillExperiment == true || MainWindowViewModel.GetInstance().IsConnect == false;
         }
-        #endregion
+
+        #endregion 不发指令给PLC的条件，避免卡顿
 
         #region 辅助函数，得到需要传输的16进制
+
         private string ConvertDecToHex(string input, int k)
         {
             int n = Convert.ToInt32(input);
@@ -117,9 +125,11 @@ namespace PipetitngCode.ViewModel
             }
             return ans;
         }
-        #endregion
+
+        #endregion 辅助函数，得到需要传输的16进制
 
         #region 从输入里面解析参数，将其转换成16进制
+
         private int ConvertHexToDec(string input, int k)
         {
             int ans = 0;
@@ -137,9 +147,11 @@ namespace PipetitngCode.ViewModel
             }
             return ans;
         }
-        #endregion
+
+        #endregion 从输入里面解析参数，将其转换成16进制
 
         #region 得到真正的地址表示
+
         // 5, 7, 8
         private string GetRealAddr(string address, int n)
         {
@@ -162,9 +174,11 @@ namespace PipetitngCode.ViewModel
             }
             return tmp;
         }
-        #endregion
+
+        #endregion 得到真正的地址表示
 
         #region 读取一个值
+
         public int PLC_SendCommand_Read(string address)
         {
             if (NoRead())
@@ -185,9 +199,11 @@ namespace PipetitngCode.ViewModel
             }
             return 0;
         }
-        #endregion
+
+        #endregion 读取一个值
 
         #region 写入一个值
+
         public bool PLC_SendCommand_Write(string address, int value)
         {
             if (NoRead())
@@ -208,9 +224,11 @@ namespace PipetitngCode.ViewModel
             }
             return false;
         }
-        #endregion
+
+        #endregion 写入一个值
 
         #region 读取数组
+
         public int[] PLC_SendCommand_ReadArray(string address, int size)
         {
             if (NoRead())
@@ -231,9 +249,11 @@ namespace PipetitngCode.ViewModel
             }
             return new int[0];
         }
-        #endregion
+
+        #endregion 读取数组
 
         #region 写入数组
+
         public bool PLC_SendCommand_WriteArray(string address, int[] input)
         {
             if (NoRead())
@@ -250,9 +270,11 @@ namespace PipetitngCode.ViewModel
             }
             return false;
         }
-        #endregion
+
+        #endregion 写入数组
 
         #region 松下PLC指令格式
+
         // 写WCS
         //string command = "%01#WCSR00010**\r";
         // 读RCS
@@ -270,9 +292,11 @@ namespace PipetitngCode.ViewModel
         //string command = "%01#RCPR0181R0182R0183R0184R0185R0186R0187R0188**\r";
         //myPort.Write(command);
         //string s = myPort.ReadTo("\x0d");
-        #endregion
+
+        #endregion 松下PLC指令格式
 
         #region 读取R类型寄存器
+
         private int PLC_RCS(string address)
         {
             try
@@ -286,6 +310,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (App.Current == null)
                         {
                             return -1;
@@ -298,7 +323,8 @@ namespace PipetitngCode.ViewModel
                             MainWindowViewModel.GetInstance().IsConnect = true;
                         }));
 
-                        #endregion
+                        #endregion 更新状态栏和PLC连接标志
+
                         return receive[receive.Length - 3] == '0' ? 0 : 1;
                     }
                 }
@@ -306,6 +332,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志
+
                 if (App.Current == null)
                 {
                     return -1;
@@ -317,14 +344,18 @@ namespace PipetitngCode.ViewModel
                     CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                     MainWindowViewModel.GetInstance().IsConnect = false;
                 }));
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志
+
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return -1;
         }
-        #endregion
+
+        #endregion 读取R类型寄存器
 
         #region 写入R类型寄存器
+
         private bool PLC_WCS(string address, int value)
         {
             if (value != 0 && value != 1)
@@ -341,6 +372,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯失败")
                         {
                             if (App.Current == null)
@@ -354,7 +386,8 @@ namespace PipetitngCode.ViewModel
                                 MainWindowViewModel.GetInstance().IsConnect = true;
                             }));
                         }
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
 
                         return true;
                     }
@@ -367,6 +400,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -375,21 +409,23 @@ namespace PipetitngCode.ViewModel
                     }
                     App.Current.Dispatcher.Invoke(new Action(() =>
                     {
-
                         CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning copy.png"));
                         CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
 
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return false;
         }
-        #endregion
+
+        #endregion 写入R类型寄存器
 
         #region 读取DT和DDT类型，只读取一个
+
         private int PLC_RD(string beginAddress)
         {
             try
@@ -415,6 +451,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯失败")
                         {
                             if (App.Current == null)
@@ -426,10 +463,11 @@ namespace PipetitngCode.ViewModel
                                 CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning.png"));
                                 CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯成功";
                                 MainWindowViewModel.GetInstance().IsConnect = true;
-
                             }));
                         }
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
+
                         // 6, receive[:-2]
                         if (beginAddress.StartsWith("DT"))
                         {
@@ -446,6 +484,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -454,21 +493,24 @@ namespace PipetitngCode.ViewModel
                     }
                     App.Current.Dispatcher.Invoke(new Action(() =>
                     {
-
                         CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning copy.png"));
                         CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                         MainWindowViewModel.GetInstance().ErrorMsg = "PLC连接错误！";
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
+
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return -1;
         }
-        #endregion
+
+        #endregion 读取DT和DDT类型，只读取一个
 
         #region 写入DT和DDT类型，只读取一个
+
         private bool PLC_WD(string beginAddress, int value)
         {
             try
@@ -494,6 +536,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯失败")
                         {
                             if (App.Current == null)
@@ -507,7 +550,9 @@ namespace PipetitngCode.ViewModel
                                 MainWindowViewModel.GetInstance().IsConnect = true;
                             }));
                         }
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
+
                         return true;
                     }
                 }
@@ -515,6 +560,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -529,14 +575,18 @@ namespace PipetitngCode.ViewModel
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
+
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return false;
         }
-        #endregion
+
+        #endregion 写入DT和DDT类型，只读取一个
 
         #region 读取R类型数组，beginAddress就是开始地址，size就是读取多少个
+
         public int[] PLC_RCP(string beginAddress, int size)
         {
             if (size <= 0)
@@ -560,6 +610,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (App.Current == null)
                         {
                             return new int[0];
@@ -570,7 +621,9 @@ namespace PipetitngCode.ViewModel
                             CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯成功";
                             MainWindowViewModel.GetInstance().IsConnect = true;
                         }));
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
+
                         int[] ans = new int[size];
                         int k = 0;
                         // 6, receive[:-2]
@@ -586,6 +639,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception e)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -600,13 +654,16 @@ namespace PipetitngCode.ViewModel
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
             }
             return new int[0];      // 返回空数组
         }
-        #endregion
+
+        #endregion 读取R类型数组，beginAddress就是开始地址，size就是读取多少个
 
         #region 读取DT和DDT类型，beginAddress就是开始地址，size就是需要读取多少个
+
         private int[] PLC_RDArray(string beginAddress, int size)
         {
             if (size <= 0)
@@ -636,6 +693,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯失败")
                         {
                             if (App.Current == null)
@@ -649,7 +707,9 @@ namespace PipetitngCode.ViewModel
                                 MainWindowViewModel.GetInstance().IsConnect = true;
                             }));
                         }
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
+
                         int[] ans = new int[size];
                         // 6, receive[:-2]
                         if (beginAddress.StartsWith("DT"))
@@ -673,11 +733,11 @@ namespace PipetitngCode.ViewModel
                         return ans;
                     }
                 }
-
             }
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -686,21 +746,24 @@ namespace PipetitngCode.ViewModel
                     }
                     App.Current.Dispatcher.Invoke(new Action(() =>
                     {
-
                         CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning copy.png"));
                         CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                         MainWindowViewModel.GetInstance().ErrorMsg = "PLC连接错误！";
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
+
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return new int[0];      // 返回空数组
         }
-        #endregion
+
+        #endregion 读取DT和DDT类型，beginAddress就是开始地址，size就是需要读取多少个
 
         #region 写入，需要传入一个数组
+
         private bool PLC_WDArray(string beginAddress, int[] WriteData)
         {
             int size = WriteData.Length;
@@ -740,6 +803,7 @@ namespace PipetitngCode.ViewModel
                     if (receive[3] == '$')
                     {
                         #region 更新状态栏和PLC连接标志
+
                         if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯失败")
                         {
                             if (App.Current == null)
@@ -753,7 +817,9 @@ namespace PipetitngCode.ViewModel
                                 MainWindowViewModel.GetInstance().IsConnect = true;
                             }));
                         }
-                        #endregion
+
+                        #endregion 更新状态栏和PLC连接标志
+
                         return true;
                     }
                 }
@@ -761,6 +827,7 @@ namespace PipetitngCode.ViewModel
             catch (Exception ex)
             {
                 #region 更新状态栏和PLC连接标志并弹窗
+
                 if (CommunicationStateViewModel.GetInstance().CommunicationStateText == "通讯成功")
                 {
                     if (App.Current == null)
@@ -769,18 +836,20 @@ namespace PipetitngCode.ViewModel
                     }
                     App.Current.Dispatcher.Invoke(new Action(() =>
                     {
-
                         CommunicationStateViewModel.GetInstance().CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning copy.png"));
                         CommunicationStateViewModel.GetInstance().CommunicationStateText = "通讯失败";
                         MainWindowViewModel.GetInstance().ErrorMsg = "PLC连接错误！";
                         MainWindowViewModel.GetInstance().IsConnect = false;
                     }));
                 }
-                #endregion
+
+                #endregion 更新状态栏和PLC连接标志并弹窗
+
                 MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
             }
             return false;
         }
-        #endregion
+
+        #endregion 写入，需要传入一个数组
     }
 }

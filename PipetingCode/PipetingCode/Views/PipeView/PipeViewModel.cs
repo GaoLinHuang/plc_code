@@ -1,22 +1,7 @@
-﻿using PipettingControl;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Windows.Base;
-using PipetitngCode.Common;
-using PipettingCode;
-using System.Threading;
-using System.IO;
-using PipetitngCode.ViewModel;
-
-namespace PipetitngCode.Views
+﻿namespace PipettingCode.Views
 {
     //internal class PipeViewModel : NotifyBase
     //{
-
     //    public PipeViewModel()
     //    {
     //        ConnectCommand = new DelegateCommand(OnConnect);
@@ -45,7 +30,7 @@ namespace PipetitngCode.Views
     //            mCommData.mIPAddress = Ip;                       // 1.加样臂网卡IP地址
     //            mCommData.mIPport = Port;                          // 2.加样臂网卡使用的端口
     //            mCommData.InitBz = 0;                                                // 3.初始化标志: 0 节点匹配，建立预备执行组，X,Y,Z，泵初始化；1 Z轴初始化 2 X轴初始化 3 Y轴初始化  4 泵初始化
-    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
     //            result = mTCPUDP_Common.DisConnect();                     // 加样臂初始化
     //            if (result != 0)
     //            {
@@ -74,7 +59,7 @@ namespace PipetitngCode.Views
     //            mCommData.mIPAddress = Global_Parameter.IPAddress;                       // 1.加样臂网卡IP地址
     //            mCommData.mIPport = Global_Parameter.IPPort;                          // 2.加样臂网卡使用的端口
     //            mCommData.InitBz = 0;                                                // 3.初始化标志: 0 节点匹配，建立预备执行组，X,Y,Z，泵初始化；1 Z轴初始化 2 X轴初始化 3 Y轴初始化  4 泵初始化
-    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
     //            result = mTCPUDP_Common.client_Connect(mCommData.mIPAddress, mCommData.mIPport, mCommData.mBdIPAddress, mCommData.mBdIPport);                     // 加样臂初始化
     //            // 必须保证连接网络成功
     //            int i = 0;
@@ -96,7 +81,6 @@ namespace PipetitngCode.Views
     //    #endregion
     //    #endregion
 
-
     //    #region 1 初始化
 
     //    #region 1.1 加样臂初始化
@@ -114,7 +98,7 @@ namespace PipetitngCode.Views
     //            mCommData.mIPAddress = Global_Parameter.IPAddress;                       // 1.加样臂网卡IP地址
     //            mCommData.mIPport = Global_Parameter.IPPort;                          // 2.加样臂网卡使用的端口
     //            mCommData.InitBz = 0;                                                // 3.初始化标志: 0 节点匹配，建立预备执行组，X,Y,Z，泵初始化；1 Z轴初始化 2 X轴初始化 3 Y轴初始化  4 泵初始化
-    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
     //            result = mTCPUDP_Common.cmd_SamplingarmInit(mCommData);                     // 加样臂初始化
     //            if (result != 0)
     //            {
@@ -170,7 +154,7 @@ namespace PipetitngCode.Views
     //            mCommData.mIPAddress = Global_Parameter.IPAddress;                       // 1.加样臂网卡IP地址
     //            mCommData.mIPport = Global_Parameter.IPPort;                          // 2.加样臂网卡使用的端口
     //            mCommData.InitBz = 0;                                                // 3.初始化标志: 0 节点匹配，建立预备执行组，X,Y,Z，泵初始化；1 Z轴初始化 2 X轴初始化 3 Y轴初始化  4 泵初始化
-    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //            mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
     //            result = mTCPUDP_Common.cmd_SamplingarmInit_NotRemoval(mCommData);                     // 加样臂初始化
     //            if (result != 0)
     //            {
@@ -437,7 +421,6 @@ namespace PipetitngCode.Views
     //        //            }
     //        //        }
 
-
     //        #region 无用
 
     //        // w无用
@@ -457,7 +440,6 @@ namespace PipetitngCode.Views
     //        //}));
 
     //        #endregion
-
 
     //        //    }
     //        //}
@@ -676,8 +658,8 @@ namespace PipetitngCode.Views
     //        //    }
     //        //    mParameter.mLiquidlevelfollowingFlag = false;
 
-    //        //    mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
-    //        //    mParameter.mSamplesize = TxtNumberOfStitches;          //5.样本数量; 
+    //        //    mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
+    //        //    mParameter.mSamplesize = TxtNumberOfStitches;          //5.样本数量;
 
     //        //    // 如果没有设置，取吸液界面设置的参数
     //        //    mParameter.mSuctionHeight = 1000;
@@ -930,8 +912,8 @@ namespace PipetitngCode.Views
     //        //    }
     //        //    mParameter.mLiquidlevelfollowingFlag = false;
 
-    //        //    mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //3.样本数量; 
-    //        //    mParameter.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //5.样本数量; 
+    //        //    mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //3.样本数量;
+    //        //    mParameter.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //5.样本数量;
 
     //        //    // 如果没有设置，取吸液界面设置的参数
     //        //    mParameter.mSuctionHeight = 700;
@@ -1228,7 +1210,6 @@ namespace PipetitngCode.Views
     //        //        mCommData.mMoveTargetX = Global_Parameter.SampleStartX[index] + ((count % 4) / 2) * 6 * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
     //        //    }
 
-
     //        //    result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_X_AxisPosition(mCommData);     // 移动X到加样位置
 
     //        //    if (result == 0)
@@ -1386,8 +1367,8 @@ namespace PipetitngCode.Views
     //        //        mCommData.mMoveTargetY = Global_Parameter.SampleStartY[index] + (count % 2) * InjectionYInternal;
     //        //    }
 
-    //        //    mCommData.mSamplesize = TxtNumberOfStitches;          //5.样本数量; 
-    //        //    mParameter.mSamplesize = TxtNumberOfStitches;          //6.样本数量; 
+    //        //    mCommData.mSamplesize = TxtNumberOfStitches;          //5.样本数量;
+    //        //    mParameter.mSamplesize = TxtNumberOfStitches;          //6.样本数量;
     //        //    mParameter.mTipGap = PipettingParameter.TxtTipClearance;              //7.30针尖空气间隙(μl):
     //        //    mParameter.mNeedleTailGap = PipettingParameter.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
     //        //    mParameter.mInjectionPumpSpace = PipettingParameter.MInjectionPumpSpace;          //9.注液量
@@ -1421,7 +1402,7 @@ namespace PipetitngCode.Views
     //        //        DisplayMessage("注液失败..");
     //        //        if (result != -1)
     //        //        {
-    //        //            result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液    
+    //        //            result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液
     //        //        }
     //        //    }
     //        //}
@@ -1451,9 +1432,8 @@ namespace PipetitngCode.Views
     //            int InjectionYInternal = (Global_Parameter.SystemInjectionEndY - Global_Parameter.SystemInjectionStartY) / 7;       // 注液Y间距
     //            mCommData.mMoveTargetY = Global_Parameter.SystemInjectionStartY + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
 
-
-    //            mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //5.样本数量; 
-    //            mParameter.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //6.样本数量; 
+    //            mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //5.样本数量;
+    //            mParameter.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //6.样本数量;
     //            mParameter.mTipGap = PipettingParameterBuild.TxtTipClearance;              //7.30针尖空气间隙(μl):
     //            mParameter.mNeedleTailGap = PipettingParameterBuild.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
     //            mParameter.mInjectionPumpSpace = PipettingParameterBuild.MInjectionPumpSpace;          //9.注液量
@@ -1487,7 +1467,7 @@ namespace PipetitngCode.Views
     //                DisplayMessage("注液失败..");
     //                if (result != -1)
     //                {
-    //                    result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液    
+    //                    result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液
     //                }
     //            }
     //        }
@@ -1626,7 +1606,7 @@ namespace PipetitngCode.Views
     //            DisplayMessage("正在进行脱针..");
     //            mCommData.mIPAddress = Global_Parameter.IPAddress;                       // 1.加样臂网卡IP地址
     //            mCommData.mIPport = Global_Parameter.IPPort;                          // 2.加样臂网卡使用的端口
-    //            mCommData.mSamplesize = TxtNumberOfStitches;              // 3.样本数量; 
+    //            mCommData.mSamplesize = TxtNumberOfStitches;              // 3.样本数量;
 
     //            mCommData.mEnableFlag[0] = 1;
     //            mCommData.mEnableFlag[1] = 1;
@@ -1695,7 +1675,7 @@ namespace PipetitngCode.Views
     //        Tcp_CommData mCommData = new Tcp_CommData();
     //        mCommData.mIPAddress = Global_Parameter.IPAddress;                   //1.加样臂网卡IP地址
     //        mCommData.mIPport = Global_Parameter.IPPort;                         //2.加样臂网卡使用的端口
-    //        mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //        mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
 
     //        if (mTCPUDP_Common.cmd_ReturnXaxisLocation(mCommData) >= 0)
     //        {
@@ -1714,7 +1694,7 @@ namespace PipetitngCode.Views
     //        Tcp_CommData mCommData = new Tcp_CommData();
     //        mCommData.mIPAddress = Global_Parameter.IPAddress;                       // 1.加样臂网卡IP地址
     //        mCommData.mIPport = Global_Parameter.IPPort;                          // 2.加样臂网卡使用的端口
-    //        mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量; 
+    //        mCommData.mSamplesize = TxtNumberOfStitches;          //3.样本数量;
 
     //        for (int i = 0; i < n; ++i)
     //        {
@@ -1813,7 +1793,6 @@ namespace PipetitngCode.Views
     //        return diff;
     //        #endregion
     //    }
-
 
     //    private static object _locker = new object();
     //    private static TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();

@@ -4,15 +4,15 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using Windows.Base;
 
-namespace PipetitngCode.Views
+namespace PipettingCode.Views
 {
     internal class PipeService : NotifyBase
     {
-        TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();
-        Tcp_CommData mCommData = new Tcp_CommData();
+        private TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();
+        private Tcp_CommData mCommData = new Tcp_CommData();
+
         public PipeService()
         {
             ConnectCommand = new DelegateCommand(OnConnect);
@@ -40,6 +40,7 @@ namespace PipetitngCode.Views
         private void GetPos(object obj)
         {
             #region 获取坐标
+
             //读取当前加样臂的坐标
             mCommData.mNode_ID = Global_Parameter.XCMDID[0];//0x28;
             mTCPUDP_Common.cmd_Returndistance(mCommData);
@@ -55,11 +56,14 @@ namespace PipetitngCode.Views
             mTCPUDP_Common.cmd_Returndistance(mCommData);
             Z = mCommData.mCurrentlocation[0];
             Console.WriteLine(Z);
-            #endregion
+
+            #endregion 获取坐标
         }
+
         private void MoveXLeft(object obj)
         {
             #region X轴右移
+
             mCommData.mNode_ID = Global_Parameter.XCMDID[0];//0x28;
             mCommData.mFC2 = 0X00;
             mCommData.mSpeed = Global_Parameter.XSlowSpeed[0];
@@ -87,7 +91,8 @@ namespace PipetitngCode.Views
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->X轴右移,绝对位置:" + my_XLeft + "," + m_Msg;
             Console.WriteLine(m_Msg);
-            #endregion
+
+            #endregion X轴右移
         }
 
         /// <summary>
@@ -97,6 +102,7 @@ namespace PipetitngCode.Views
         private void MoveBottom(object obj)
         {
             #region Z轴下降
+
             mCommData.mWaittime = 500;
             mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
             mTCPUDP_Common.cmd_Returndistance(mCommData);
@@ -118,7 +124,8 @@ namespace PipetitngCode.Views
             Console.WriteLine(mCommData.mCurrentlocation[0]);
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->Z轴下降,绝对位置:" + my_ZLeft + "," + m_Msg;
-            #endregion
+
+            #endregion Z轴下降
         }
 
         /// <summary>
@@ -128,6 +135,7 @@ namespace PipetitngCode.Views
         private void MoveTop(object obj)
         {
             #region Z轴升起
+
             mCommData.mWaittime = 500;
             mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
             mTCPUDP_Common.cmd_Returndistance(mCommData);
@@ -154,7 +162,8 @@ namespace PipetitngCode.Views
             Console.WriteLine(mCommData.mCurrentlocation[0]);
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->Z轴升起,绝对位置:" + my_ZLeft + "," + m_Msg;
-            #endregion
+
+            #endregion Z轴升起
         }
 
         /// <summary>
@@ -205,8 +214,10 @@ namespace PipetitngCode.Views
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->Y轴内移,绝对位置:" + my_YLeft + "," + m_Msg;
             my_OldYLeft = my_YLeft;
-            #endregion
+
+            #endregion Y轴后移
         }
+
         /// <summary>
         /// 向前移动
         /// </summary>
@@ -214,12 +225,12 @@ namespace PipetitngCode.Views
         private void MoveFront(object obj)
         {
             #region Y轴前移
+
             int result = 0;
             mCommData.mWaittime = 500;
             mCommData.mNode_ID = Global_Parameter.YCMDID[0];
             my_YLeft = mTCPUDP_Common.cmd_Returndistance(mCommData);
             my_YLeft = mCommData.mCurrentlocation[0];
-
 
             my_YLeft += StepValue;
             if (my_YLeft > 4000)
@@ -255,7 +266,6 @@ namespace PipetitngCode.Views
             if (result == 0)
             {
                 Console.WriteLine(mCommData.mCurrentlocation[0]);
-
             }
             mCommData.mNode_ID = Global_Parameter.YCMDID[0];
             mTCPUDP_Common.cmd_Returndistance(mCommData);
@@ -263,12 +273,14 @@ namespace PipetitngCode.Views
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->Y轴外移,绝对位置:" + my_YLeft + "," + m_Msg;
             my_OldYLeft = my_YLeft;
-            #endregion
+
+            #endregion Y轴前移
         }
 
         private void MoveXRight(object obj)
         {
             #region X轴右移
+
             mCommData.mNode_ID = Global_Parameter.XCMDID[0];//0x28;
             mCommData.mFC2 = 0X00;
             mCommData.mSpeed = Global_Parameter.XSlowSpeed[0];
@@ -297,11 +309,14 @@ namespace PipetitngCode.Views
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->X轴右移,绝对位置:" + my_XLeft + "," + m_Msg;
             Console.WriteLine(m_Msg);
-            #endregion
+
+            #endregion X轴右移
         }
+
         private void OnInitZ(object obj)
         {
             #region Z轴初始化
+
             my_ZLeft = 0;
             mCommData.mGroupName = Global_Parameter.ZGroup;
             int result = -1;
@@ -320,18 +335,20 @@ namespace PipetitngCode.Views
             string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
             m_Msg = "实验平台-->加样臂调试-->Z轴初始化," + m_Msg;
             Console.WriteLine(m_Msg);
-            #endregion
+
+            #endregion Z轴初始化
         }
+
         private void OnInit(object obj)
         {
             #region 加样臂初始化
+
             my_XLeft = 0;
             my_ZLeft = 0;
             my_YLeft = 0;
             int result = mTCPUDP_Common.Cmd_GroupInit(mCommData);                   //建立预备执行组
             if (result != 0)
             {
-
                 MessageBox.Show("button1_Click 建立执行组失败!");
 
                 return;
@@ -350,7 +367,8 @@ namespace PipetitngCode.Views
             m_Msg = "实验平台-->加样臂调试-->加样臂初始化," + m_Msg;
             Console.WriteLine(m_Msg);
             ;
-            #endregion
+
+            #endregion 加样臂初始化
         }
 
         /// <summary>
@@ -361,6 +379,7 @@ namespace PipetitngCode.Views
         {
             Check_Connect();
         }
+
         public ICommand ConnectCommand { get; }
 
         public ICommand MoveXLeftCommand { get; }
@@ -374,6 +393,7 @@ namespace PipetitngCode.Views
         public ICommand GetPosCommand { get; }
         public ObservableCollection<int> Steps { get; set; }
         private int _stepValue;
+
         public int StepValue
         {
             get => _stepValue;
@@ -381,6 +401,7 @@ namespace PipetitngCode.Views
         }
 
         private int _x;
+
         public int X
         {
             get => _x;
@@ -403,8 +424,6 @@ namespace PipetitngCode.Views
             set => SetField(ref _z, value);
         }
 
-
-
         private void Check_Connect()
         {
             bool result = false;
@@ -413,12 +432,10 @@ namespace PipetitngCode.Views
             {
                 while (!result)
                 {
-
                     Thread.Sleep(10);
                     result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort);
                     if (!result)
                     {
-
                         m_Countnum++;
                         if (m_Countnum >= 5)
                         {
@@ -459,8 +476,8 @@ namespace PipetitngCode.Views
             }
         }
 
-
         #region 节点匹配初始化
+
         /// <summary>
         /// 节点匹配初始化
         /// </summary>
@@ -477,7 +494,9 @@ namespace PipetitngCode.Views
                 mCommData.mIPport = Global_Parameter.IPPort;
                 mCommData.mWaittime = 500;
                 //------------------------------------------------------------------------------------------------------------
+
                 #region 节点匹配
+
                 //this.Invoke(new Action(() =>
                 //{
                 //    Display_List("正在进行系统节点匹配......");
@@ -494,7 +513,6 @@ namespace PipetitngCode.Views
                     m_NodeNo = 0;
                     for (int i = 0; i < strPos.Length; i++)
                     {
-
                         Thread.Sleep(10);
                         mCommData.mNode_ID = (byte)(strPos[i].HexStringToInt());
                         Console.WriteLine("节点匹配,节点:" + mCommData.mNode_ID.ToString("X2"));
@@ -536,16 +554,14 @@ namespace PipetitngCode.Views
                     }
                     if (m_NodeNo == strPos.Length)
                     {
-
                         Console.WriteLine("Init_Sys 节点匹配成功!", "TCPdata");
                         break;
                     }
                     else
                     {
-
                         //Console.WriteLine("节点匹配失败,缺少节点:" + m_NoNG);
                         //LogUtils.SaveLog("Init_Sys 节点匹配失败,缺少节点:" + m_NoNG, "TCPdata");
-                        ////获取用户点击提示框的按钮值 
+                        ////获取用户点击提示框的按钮值
                         //DialogResult bl = MessageBox.Show("缺少节点:" + m_NoNG, "系统提示", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
                         //if (bl == DialogResult.Ignore)//忽略到最后一个节点时，初始化现有节点得电机
                         //{
@@ -559,33 +575,28 @@ namespace PipetitngCode.Views
                         //{
                         //    ;
                         //}
-
                     }
                 }
-                #endregion
+
+                #endregion 节点匹配
 
                 //1.建立预备执行组
                 result = mTCPUDP_Common.Cmd_GroupInit(mCommData);                   //建立预备执行组
                 if (result != 0)
                 {
-
                     MessageBox.Show("设置预备执行组失败!");
                     LogUtils.SaveLog("Init_Sys 设置预备执行组失败....", "TCPdata");         //  写日志
-
                 }
 
                 Console.WriteLine
                 ("设置预备执行组成功！");
                 LogUtils.SaveLog("设置预备执行组成功", "TCPdata");
 
-
                 if (Global_Parameter.AutoInitFlag.Equals("ON"))
                 {
                     result = mTCPUDP_Common.cmd_CheckAllNoteInitFlag(mCommData);
                     if (result != 0)
                     {
-
-
                         Console.WriteLine("正在进行系统初始化......");
                         LogUtils.SaveLog("Init_Sys 设置预备执行组......", "TCPdata");
 
@@ -599,9 +610,7 @@ namespace PipetitngCode.Views
                         }
                         else
                         {
-
                             MessageBox.Show("系统初始化失败，无法进行实验操作!");
-
                         }
                     }
                     else
@@ -643,7 +652,9 @@ namespace PipetitngCode.Views
                 mCommData.mIPAddress = Global_Parameter.IPAddress;
                 mCommData.mIPport = Global_Parameter.IPPort;
                 mCommData.mWaittime = 500;
-                #region  1.设置预备执行组
+
+                #region 1.设置预备执行组
+
                 try
                 {
                     resulterr = "设置预备执行组......";
@@ -652,7 +663,6 @@ namespace PipetitngCode.Views
                     a1 = 0;
                     while (result != 0)
                     {
-
                         Thread.Sleep(100);
                         result = mTCPUDP_Common.Cmd_GroupInit(mCommData);                   //建立预备执行组
                         if (result != 0)
@@ -668,7 +678,7 @@ namespace PipetitngCode.Views
 
                                 m_IgnoreFlag = false;
                                 m_AbortFlag = false;
-                                //获取用户点击提示框的按钮值 
+                                //获取用户点击提示框的按钮值
                                 //DialogResult bl = MessageBox.Show("设置预备执行组失败,是否重试!", "初始化并自检提示", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
                                 //if (bl == DialogResult.Ignore)//忽略到最后一个节点时，初始化现有节点得电机
                                 //{
@@ -691,7 +701,8 @@ namespace PipetitngCode.Views
                                 {
                                     goto errNo;
                                 }
-                                #endregion
+
+                                #endregion DialogResult
                             }
                         }
                         else
@@ -707,8 +718,11 @@ namespace PipetitngCode.Views
                 {
                     ;
                 }
-                #endregion
+
+                #endregion 1.设置预备执行组
+
                 #region 2.加样臂初始化
+
                 try
                 {
                     result = -1;
@@ -717,7 +731,6 @@ namespace PipetitngCode.Views
                     Display_List(resulterr);
                     while (result != 0)
                     {
-
                         Thread.Sleep(100);
                         result = mTCPUDP_Common.cmd_SamplingarmInit(mCommData);                   //加样臂初始化
                         if (result != 0)
@@ -730,10 +743,11 @@ namespace PipetitngCode.Views
                             if (m_Countnum >= 5)
                             {
                                 #region DialogResult
+
                                 //this.Invoke((MethodInvoker)delegate
                                 //{
                                 //    m_IgnoreFlag = false;
-                                //    //获取用户点击提示框的按钮值 
+                                //    //获取用户点击提示框的按钮值
                                 //    DialogResult bl = MessageBox.Show("加样臂初始化失败,是否重试!", "初始化并自检提示", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
                                 //    if (bl == DialogResult.Ignore)//忽略到最后一个节点时，初始化现有节点得电机
                                 //    {
@@ -756,7 +770,8 @@ namespace PipetitngCode.Views
                                 {
                                     goto errNo;
                                 }
-                                #endregion
+
+                                #endregion DialogResult
                             }
                         }
                         else
@@ -773,9 +788,11 @@ namespace PipetitngCode.Views
                     ;
                 }
                 Thread.Sleep(1000);
-                #endregion
+
+                #endregion 2.加样臂初始化
 
                 #region 4.泵初始化
+
                 try
                 {
                     result = -1;
@@ -784,7 +801,6 @@ namespace PipetitngCode.Views
                     Display_List(resulterr);
                     while (result != 0)
                     {
-
                         Thread.Sleep(100);
                         result = mTCPUDP_Common.Cmd_PlungerPumpOneInit(mCommData);                   //泵初始化
                         if (result != 0)
@@ -797,10 +813,11 @@ namespace PipetitngCode.Views
                             if (m_Countnum >= 5)
                             {
                                 #region DialogResult
+
                                 //this.Invoke((MethodInvoker)delegate
                                 //{
                                 //    m_IgnoreFlag = false;
-                                //    //获取用户点击提示框的按钮值 
+                                //    //获取用户点击提示框的按钮值
                                 //    DialogResult bl = MessageBox.Show("泵初始化失败,是否重试!", "初始化并自检提示", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
                                 //    if (bl == DialogResult.Ignore)//忽略到最后一个节点时，初始化现有节点得电机
                                 //    {
@@ -823,7 +840,8 @@ namespace PipetitngCode.Views
                                 {
                                     goto errNo;
                                 }
-                                #endregion
+
+                                #endregion DialogResult
                             }
                         }
                         else
@@ -840,9 +858,11 @@ namespace PipetitngCode.Views
                     ;
                 }
                 Thread.Sleep(1000);
-                #endregion
+
+                #endregion 4.泵初始化
 
                 #region 8.把加样臂移到原点
+
                 if (In_Bz == 0)
                 {
                     try
@@ -853,7 +873,6 @@ namespace PipetitngCode.Views
                         Display_List(resulterr);
                         while (result != 0)
                         {
-
                             Thread.Sleep(100);
                             mCommData.mNode_ID = Global_Parameter.XCMDID[0];
                             mCommData.mSpeed = Global_Parameter.XInitSpeed[0];
@@ -870,10 +889,11 @@ namespace PipetitngCode.Views
                                 if (m_Countnum >= 5)
                                 {
                                     #region DialogResult
+
                                     //this.Invoke((MethodInvoker)delegate
                                     //{
                                     //    m_IgnoreFlag = false;
-                                    //    //获取用户点击提示框的按钮值 
+                                    //    //获取用户点击提示框的按钮值
                                     //    DialogResult bl = MessageBox.Show("把加样臂移到原点失败,是否重试!", "初始化并自检提示", MessageBoxButtons.AbortRetryIgnore, MessageBoxIcon.Error);
                                     //    if (bl == DialogResult.Ignore)//忽略到最后一个节点时，初始化现有节点得电机
                                     //    {
@@ -896,7 +916,8 @@ namespace PipetitngCode.Views
                                     {
                                         goto errNo;
                                     }
-                                    #endregion
+
+                                    #endregion DialogResult
                                 }
                             }
                             else
@@ -913,7 +934,8 @@ namespace PipetitngCode.Views
                         ;
                     }
                 }
-                #endregion
+
+                #endregion 8.把加样臂移到原点
             }
             catch (Exception ex)
             {
@@ -926,14 +948,12 @@ namespace PipetitngCode.Views
                 result = -1;
                 resulterr = "仪器初始化结束，但初始化失败......";
                 LogUtils.SaveLog("DeviceCheck_AutoInit 仪器初始化结束，但初始化失败......", "TCPdata");
-
             }
             else
             {
                 result = 0;
                 resulterr = "仪器整个初始化成功！";
                 LogUtils.SaveLog("DeviceCheck_AutoInit 仪器整个初始化成功！", "TCPdata");
-
             }
             Display_List(resulterr);
             return result;
@@ -944,19 +964,20 @@ namespace PipetitngCode.Views
             Console.WriteLine(resulterr);
         }
 
-
         /// <summary>
         /// 加样臂按钮操作
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// 
-        int my_XLeft = 0;
-        int my_YLeft = 0;
-        int my_ZLeft = 0;
+        ///
+        private int my_XLeft = 0;
 
-        bool my_InitFlag1 = false;
-        int my_OldYLeft = 0;
+        private int my_YLeft = 0;
+        private int my_ZLeft = 0;
+
+        private bool my_InitFlag1 = false;
+        private int my_OldYLeft = 0;
     }
-    #endregion
+
+    #endregion 节点匹配初始化
 }

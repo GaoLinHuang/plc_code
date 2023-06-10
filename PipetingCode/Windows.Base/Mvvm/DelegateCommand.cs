@@ -20,7 +20,8 @@ namespace Windows.Base
 
         // 使用lambda表达式简写，??说明，当前面的值为空的时候，返回预设的值
         public bool CanExecute(object? parameter) => true;
-            //parameter != null && (CanExecuteFunc?.Invoke(parameter) ?? true);
+
+        //parameter != null && (CanExecuteFunc?.Invoke(parameter) ?? true);
 
         public void Execute(object? parameter)
         {

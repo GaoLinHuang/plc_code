@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Base;
+﻿using Windows.Base;
 
-namespace PipetitngCode.Models
+namespace PipettingCode.Models
 {
     // 样本，4个状态，未处理，进行中，已完成，质检
     public class SampleModel : NotifiactionObject
@@ -72,7 +67,6 @@ namespace PipetitngCode.Models
             }
         }
 
-
         // 是否质检
         private bool _isChecked;
 
@@ -88,6 +82,7 @@ namespace PipetitngCode.Models
 
         // 根据4个状态得到的颜色
         private string _color;
+
         public string Color
         {
             get

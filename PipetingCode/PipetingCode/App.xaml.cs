@@ -15,6 +15,7 @@ namespace PipettingCode
         }
 
         #region 获取配置文件各个参数数据
+
         /// <summary>
         /// 获取配置文件各个参数数据
         /// </summary>
@@ -23,20 +24,26 @@ namespace PipettingCode
             try
             {
                 #region 1.系统参数
+
                 Global_Parameter.SysXyxtkq = Convert.ToInt16(IniFile.SysXyxtkq);
                 Global_Parameter.IPAddress = IniFile.IPAddress;                                             //仪器网卡IP地址
                 Global_Parameter.IPPort = IniFile.IPPort;                                                   //仪器网卡使用的端口号
                 Global_Parameter.Sys_SaveLog_Flag = IniFile.Sys_SaveLog_Flag;                               //写日日志标志  ON 写  OFF 不写
                 Global_Parameter.AutoInitFlag = IniFile.AutoInitFlag;                                       //是否自动初始化标志
-                #endregion
+
+                #endregion 1.系统参数
+
                 #region 2.各模块节点值
+
                 Global_Parameter.XCMDID = Get_StrToByte(IniFile.XCMDID);                                    //1.加样臂X轴地址
                 Global_Parameter.YCMDID = Get_StrToByte(IniFile.YCMDID);                                    //2.加样臂Y轴地址
                 Global_Parameter.ZCMDID = Get_StrToByte(IniFile.ZCMDID);                                    //3.加样臂Z轴地址
-                Global_Parameter.PlungerCMDID = Get_StrToByte(IniFile.PlungerCMDID);                        //4.泵节点编号                     
-                #endregion
+                Global_Parameter.PlungerCMDID = Get_StrToByte(IniFile.PlungerCMDID);                        //4.泵节点编号
 
-                #region  3.系统使用的所有节点，节点匹配使用
+                #endregion 2.各模块节点值
+
+                #region 3.系统使用的所有节点，节点匹配使用
+
                 Global_Parameter.Node_ID = IniFile.XCMDID;
                 Global_Parameter.Node_ID += "," + IniFile.YCMDID;
                 Global_Parameter.Node_ID += "," + IniFile.ZCMDID;
@@ -63,12 +70,14 @@ namespace PipettingCode
                     }
                 }
                 Global_Parameter.Node_ID = m_S1;
-                #endregion
+
+                #endregion 3.系统使用的所有节点，节点匹配使用
 
                 #region 4.加样臂使用的坐标
+
                 //1.试管架
                 Global_Parameter.TubersStartX = int.Parse(IniFile.TubersStartX);                            //1.试管架开始X轴坐标
-                Global_Parameter.TubersStartY = int.Parse(IniFile.TubersStartY);                            //2.试管架开始Y轴坐标       
+                Global_Parameter.TubersStartY = int.Parse(IniFile.TubersStartY);                            //2.试管架开始Y轴坐标
                 Global_Parameter.TubersStartZ = int.Parse(IniFile.TubersStartZ);                            //3.试管架开始Z轴坐标
                 Global_Parameter.TubersEndX = int.Parse(IniFile.TubersEndX);                                //4.试管架结束X轴坐标
                 Global_Parameter.TubersEndY = int.Parse(IniFile.TubersEndY);                                //5.试管架结束Y轴坐标
@@ -103,7 +112,6 @@ namespace PipettingCode
                 Global_Parameter.TakeNeedle_DelayTime = int.Parse(IniFile.TakeNeedle_DelayTime);                                //取针时候，两根针之间的时间间隔
                 Global_Parameter.RemovealNeedle_DelayTime = int.Parse(IniFile.RemovealNeedle_DelayTime);                        //脱针时候，两根针之间的时间间隔
 
-
                 //4.试剂位
                 Global_Parameter.ReagentStartX = Get_StrToInt(IniFile.ReagentStartX);                       //19.试剂位开始X轴坐标
                 Global_Parameter.ReagentStartY = Get_StrToInt(IniFile.ReagentStartY);                       //20.试剂位开始Y轴坐标
@@ -131,10 +139,13 @@ namespace PipettingCode
                 Global_Parameter.SampleEndZ = Get_StrToInt(IniFile.SampleEndZ);                             //36.加样位结束Z轴坐标
                 Global_Parameter.SampleMaxZ = Get_StrToInt(IniFile.SampleMaxZ);                             //33.加样位开始Z轴坐标
                 Global_Parameter.SampleMoveZ = Get_StrToInt(IniFile.SampleMoveZ);                           //33.加样位开始Z轴坐标
-                #endregion
+
+                #endregion 4.加样臂使用的坐标
 
                 #region 5.加样臂、夹手臂、泵的速度和加速度
+
                 #region （1）.加样臂的速度和加速度
+
                 //1.加样臂 刚接电时速度和加速度
                 Global_Parameter.XSlowSpeed = Get_StrToInt(IniFile.XSlowSpeed);
                 Global_Parameter.XSlowAccSpeed = Get_StrToInt(IniFile.XSlowAccSpeed);
@@ -156,9 +167,11 @@ namespace PipettingCode
                 Global_Parameter.YMoveAccSpeed = Get_StrToInt(IniFile.YMoveAccSpeed);
                 Global_Parameter.ZMoveSpeed = Get_StrToInt(IniFile.ZMoveSpeed);
                 Global_Parameter.ZMoveAccSpeed = Get_StrToInt(IniFile.ZMoveAccSpeed);
-                #endregion
+
+                #endregion （1）.加样臂的速度和加速度
 
                 #region （3）.泵的速度和加速度
+
                 //1.刚上电时候使用的速度和加速度
                 Global_Parameter.PlungerPumpSlowSpeed = Get_StrToInt(IniFile.PlungerPumpSlowSpeed);
                 Global_Parameter.PlungerPumpSlowAccSpeed = Get_StrToInt(IniFile.PlungerPumpSlowAccSpeed);
@@ -168,16 +181,22 @@ namespace PipettingCode
                 //3.运行时候使用的速度和加速度
                 Global_Parameter.PlungerPumpMoveSpeed = Get_StrToInt(IniFile.PlungerPumpMoveSpeed);
                 Global_Parameter.PlungerPumpMoveAccSpeed = Get_StrToInt(IniFile.PlungerPumpMoveAccSpeed);
-                #endregion
 
-                #endregion
+                #endregion （3）.泵的速度和加速度
+
+                #endregion 5.加样臂、夹手臂、泵的速度和加速度
+
                 #region 7.预备执行组
+
                 Global_Parameter.YGroup = (byte)(IniFile.YGroup.HexStringToInt());                          //Y轴预备执行组组名 0x02
                 Global_Parameter.ZGroup = (byte)(IniFile.ZGroup.HexStringToInt());                          //Z轴预备执行组组名 0x04
                 Global_Parameter.XGroup = (byte)(IniFile.XGroup.HexStringToInt());                          //X轴预备执行组组名 0x06
                 Global_Parameter.PumpGroup = (byte)(IniFile.PumpGroup.HexStringToInt());                    //泵预备执行组组名  0x08
-                #endregion
+
+                #endregion 7.预备执行组
+
                 #region 吸液、注液系数对照表
+
                 Global_Parameter.PlungerAspVoll = IniFile.PlungerAspVoll;                                       //泵吸液注液参数
                 Global_Parameter.PlungerAspVol2 = IniFile.PlungerAspVol2;                                       //泵吸液注液参数
                 Global_Parameter.PlungerAspVol3 = IniFile.PlungerAspVol3;                                       //泵吸液注液参数
@@ -195,7 +214,8 @@ namespace PipettingCode
                 Global_Parameter.PlungerDspVol6 = IniFile.PlungerDspVol6;                                       //泵吸液注液参数
                 Global_Parameter.PlungerDspVol7 = IniFile.PlungerDspVol7;                                       //泵吸液注液参数
                 Global_Parameter.PlungerDspVol8 = IniFile.PlungerDspVol8;                                       //泵吸液注液参数
-                #endregion
+
+                #endregion 吸液、注液系数对照表
             }
             catch (Exception ex)
             {
@@ -226,6 +246,7 @@ namespace PipettingCode
             }
             return a1;
         }
+
         /// <summary>
         /// 文本字符串转换Int
         /// </summary>
@@ -249,6 +270,7 @@ namespace PipettingCode
             }
             return a1;
         }
-        #endregion
+
+        #endregion 获取配置文件各个参数数据
     }
 }

@@ -28,8 +28,10 @@ namespace Windows.Base
         }
     }
 
-    public class NotifiactionObject : NotifyBase { }
-    public  class SingletonNotifyBase<TK> : Singleton<TK>, INotifyPropertyChanged where TK : class, new()
+    public class NotifiactionObject : NotifyBase
+    { }
+
+    public class SingletonNotifyBase<TK> : Singleton<TK>, INotifyPropertyChanged where TK : class, new()
     {
         // binding 监听这个事件
         public event PropertyChangedEventHandler? PropertyChanged;

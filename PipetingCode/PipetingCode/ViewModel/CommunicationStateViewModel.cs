@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Media.Imaging;
 using System.Windows;
+using System.Windows.Media.Imaging;
 using Windows.Base;
 
-namespace PipetitngCode.ViewModel
+namespace PipettingCode.ViewModel
 {
     public class CommunicationStateViewModel : SingletonNotifyBase<CommunicationStateViewModel>
     {
         #region 通讯失败或者通讯成功
+
         private string _communicationStateText;
 
         public string CommunicationStateText
@@ -23,10 +20,13 @@ namespace PipetitngCode.ViewModel
                 RaisePropertyChanged("CommunicationStateText");
             }
         }
-        #endregion
+
+        #endregion 通讯失败或者通讯成功
 
         #region 图片
+
         private BitmapImage _communicationStatePicture;
+
         public BitmapImage CommunicationStatePicture
         {
             get { return _communicationStatePicture; }
@@ -36,10 +36,13 @@ namespace PipetitngCode.ViewModel
                 RaisePropertyChanged("CommunicationStatePicture");
             }
         }
-        #endregion
+
+        #endregion 图片
 
         #region Settings是否可见
+
         private Visibility _CanSeeSettings;
+
         public Visibility CanSeeSettings
         {
             get { return _CanSeeSettings; }
@@ -49,7 +52,8 @@ namespace PipetitngCode.ViewModel
                 RaisePropertyChanged("CanSeeSettings");
             }
         }
-        #endregion
+
+        #endregion Settings是否可见
 
         public CommunicationStateViewModel()
         {
@@ -58,8 +62,5 @@ namespace PipetitngCode.ViewModel
             CommunicationStateText = "通讯成功";
             CommunicationStatePicture = new BitmapImage(new Uri("pack://application:,,,/image/ic_warning.png"));
         }
-
     }
-
-
 }

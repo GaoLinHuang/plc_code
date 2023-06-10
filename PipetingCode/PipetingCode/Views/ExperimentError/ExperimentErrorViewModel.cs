@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Base;
 
-namespace PipetitngCode.Views
+namespace PipettingCode.Views
 {
     public class ExperimentErrorViewModel : NotifyBase
     {
         private static ExperimentErrorViewModel _instance = new();
+
         public enum ErrorCode
         {
             Init,
@@ -20,7 +17,6 @@ namespace PipetitngCode.Views
             Cancel,
             OK
         }
-
 
         private string _ErrorMsg;
 
@@ -46,12 +42,14 @@ namespace PipetitngCode.Views
             }
         }
 
-
         #region 选择的是哪一个命令
+
         public ErrorCode ErrorSingle { get; set; }
-        #endregion
+
+        #endregion 选择的是哪一个命令
 
         #region 命令
+
         public DelegateCommand StopCommand { get; set; }
 
         public DelegateCommand ReTryCommand { get; set; }
@@ -61,7 +59,8 @@ namespace PipetitngCode.Views
         public DelegateCommand IgnoreCommand { get; set; }
         public DelegateCommand CancleCommand { get; set; }
         public DelegateCommand OKCommand { get; set; }
-        #endregion
+
+        #endregion 命令
 
         private void Stop(object parameter)
         {
@@ -121,6 +120,7 @@ namespace PipetitngCode.Views
             };
             this.ErrorSingle = ErrorCode.Init;
         }
+
         public static ExperimentErrorViewModel GetInstance()
         {
             return _instance;
