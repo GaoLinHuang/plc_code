@@ -87,15 +87,29 @@ namespace PipettingCode.Services
           //  );
         }
 
+        /// <summary>
+        /// 获取配置列表
+        /// </summary>
+        /// <returns></returns>
         public List<ConfigInfo> GetConfigInfos()
         {
             return _configInfoDic.Values.ToList();
         }
+        /// <summary>
+        /// 获取配置项
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
         public List<ConfigInfoItem> GetConfigInfos(string processName)
         {
             _configInfoDic.TryGetValue(processName, out var value);
             return value?.ConfigInfoItems ?? new List<ConfigInfoItem>();
         }
+
+        /// <summary>
+        /// 更新配置
+        /// </summary>
+        /// <param name="configInfo"></param>
 
         public void UpdateConfig(ConfigInfo configInfo)
         {
