@@ -11,9 +11,11 @@ namespace PipettingCode.Services
     public class PipeProcessFour : IPipeProcess
     {
         private bool _isRunning;
+        private bool _isStoping = false;
         private string _processName;
         private ProcessConfigService _configService;
         SemaphoreSlim _semaphore = new SemaphoreSlim(1);
+        AutoResetEvent _stopResetEvent = new AutoResetEvent(false);
         public PipeProcessFour(ProcessConfigService processConfig)
         {
             _configService = processConfig;
@@ -23,23 +25,19 @@ namespace PipettingCode.Services
         {
             try
             {
-                await _semaphore.WaitAsync();
                 if (_isRunning)
                 {
                     return;
                 }
                 //连接
-                Reset();
+                //Reset();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
                 throw;
             }
-            finally
-            {
-                _semaphore.Release();
-            }
+
 
         }
 
@@ -59,6 +57,10 @@ namespace PipettingCode.Services
                     Console.WriteLine($"{_processName} 正在执行");
                     return;
                 }
+
+                Console.WriteLine();
+                Console.WriteLine($"====== {processName} 即将开始....");
+                Reset();
                 _isRunning = true;
                 _processName = processName;
                 ExecuteProcess(_processName);
@@ -81,26 +83,33 @@ namespace PipettingCode.Services
             {
                 try
                 {
+
                     List<ConfigInfoItem> configs = _configService.GetConfigInfos(processName);
 
                     var json = configs.ToJson();
-
-                    while (_isRunning)
+                    bool notifyStop = false;
+                    while (_isRunning && !notifyStop)
                     {
                         foreach (ConfigInfoItem configInfo in configs)
                         {
                             Console.WriteLine($"执行步骤：{configInfo.Id}");
                             await Task.Delay(configInfo.ContinueTime);
-                            if (!_isRunning)
+                            if (_isStoping)
                             {
-                                Reset();
+                                notifyStop = await TryStop();
                                 break;
                             }
                         }
 
-                        Console.WriteLine("===================================");
-                        await Task.Delay(1000);
+                        await Task.Delay(3000);
+                        if (_isStoping)
+                        {
+                            notifyStop = await TryStop();
+                            break;
+                        }
                     }
+
+                    Console.WriteLine("流程终止=====================");
                 }
                 catch (Exception e)
                 {
@@ -109,9 +118,40 @@ namespace PipettingCode.Services
             });
         }
 
-        public void StopCurrentProcess()
+        private async Task<bool> TryStop()
         {
-            _isRunning = false;
+            Console.WriteLine("停止.....");
+            await Task.Delay(10000);
+            _isStoping = false;
+            _stopResetEvent.Set();
+            return true;
+        }
+
+        public Task StopCurrentProcess()
+        {
+            return Task.Run(() =>
+              {
+
+                  if (!_isRunning || _isStoping)
+                  {
+                      if (_isStoping)
+                      {
+                          Console.WriteLine("停止中....");
+                      }
+
+                      if (!_isRunning)
+                      {
+                          Console.WriteLine("未运行...");
+                      }
+                      return;
+                  }
+                  _isStoping = true;
+                  Console.WriteLine("通知停止");
+                  _stopResetEvent.WaitOne();
+                  Reset();
+                  _isRunning = false;
+              });
+
         }
     }
 }

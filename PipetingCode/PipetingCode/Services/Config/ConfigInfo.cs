@@ -10,6 +10,7 @@ namespace PipettingCode.Services.Config
     {
         public string Title { get; set; }
         public string Key { get; set; }
+    
 
         public bool IsEnable { get; set; }
 

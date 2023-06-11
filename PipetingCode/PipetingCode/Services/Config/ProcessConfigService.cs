@@ -1,8 +1,11 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using PipettingCode.Services.Config;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Windows.Base;
+using Windows.Base.Json;
 
 namespace PipettingCode.Services
 {
@@ -23,47 +26,65 @@ namespace PipettingCode.Services
                 configInfos.Add(configInfo);
             }
 
+            var files = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ProcessConfig"));
+            foreach (var file in files)
+            {
+                var configInfo = JsonRepository.TryParse<ConfigInfo>(file);
+                _configInfoDic.TryAdd(configInfo.Key, configInfo);
+            }
+
+            Console.WriteLine();
+          //  List<ConfigInfo> s=new List<ConfigInfo>()
+          //{
+          //    new ConfigInfo()
+          //    {
+          //        Key = "process_1",
+          //        Title = "第一次",
+          //        IsEnable = true,
+          //        ConfigInfoItems = configInfos,
+          //    }
+          //};
           
 
-            _configInfoDic.TryAdd("process_1",
-                new ConfigInfo()
-                {
-                    Key = "process_1",
-                    Title = "第一次",
-                    IsEnable = true,
-                    ConfigInfoItems = configInfos,
-                }
-            );
+          //_configInfoDic.TryAdd("process_1",
+          //      new ConfigInfo()
+          //      {
+          //          Key = "process_1",
+          //          Title = "第一次",
+          //          IsEnable = true,
+          //          ConfigInfoItems = configInfos,
+          //      }
+          //  );
 
-            _configInfoDic.TryAdd("process_2",
-                new ConfigInfo()
-                {
-                    Key = "process_2",
-                    Title = "第二次",
-                    IsEnable = true,
-                    ConfigInfoItems = configInfos,
-                }
-            );
+          //  _configInfoDic.TryAdd("process_2",
+          //      new ConfigInfo()
+          //      {
+          //          Key = "process_2",
+          //          Title = "第二次",
+          //          IsEnable = true,
+          //          ConfigInfoItems = configInfos,
+          //      }
+          //  );
 
-            _configInfoDic.TryAdd("process_3",
-                new ConfigInfo()
-                {
-                    Key = "process_3",
-                    Title = "第三次",
-                    IsEnable = true,
-                    ConfigInfoItems = configInfos,
-                }
-            );
+          //  _configInfoDic.TryAdd("process_3",
+          //      new ConfigInfo()
+          //      {
+          //          Key = "process_3",
+          //          Title = "第三次",
+          //          IsEnable = true,
+          //          ConfigInfoItems = configInfos,
+          //      }
+          //  );
 
-            _configInfoDic.TryAdd("process_4",
-                new ConfigInfo()
-                {
-                    Key = "process_4",
-                    Title = "第四次",
-                    IsEnable = true,
-                    ConfigInfoItems = configInfos,
-                }
-            );
+          //  _configInfoDic.TryAdd("process_4",
+          //      new ConfigInfo()
+          //      {
+          //          Key = "process_4",
+          //          Title = "第四次",
+          //          IsEnable = true,
+          //          ConfigInfoItems = configInfos,
+          //      }
+          //  );
         }
 
         public List<ConfigInfo> GetConfigInfos()

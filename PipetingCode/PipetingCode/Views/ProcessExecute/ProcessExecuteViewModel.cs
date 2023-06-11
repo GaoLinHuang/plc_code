@@ -25,9 +25,9 @@ namespace PipettingCode.Views
         /// 停止
         /// </summary>
         /// <param name="obj"></param>
-        private void OnStopExecuteProcess(object obj)
+        private  void OnStopExecuteProcess(object obj)
         {
-            MainSingletonService.Instance.PipeProcess.StopCurrentProcess();
+             MainSingletonService.Instance.PipeProcess.StopCurrentProcess();
         }
 
         /// <summary>

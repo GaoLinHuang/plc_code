@@ -19,6 +19,6 @@ namespace PipettingCode.Services
         /// <summary>
         /// 结束流程
         /// </summary>
-        void StopCurrentProcess();
+        Task StopCurrentProcess();
     }
 }
