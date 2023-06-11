@@ -23,5 +23,7 @@
         <views:PipeView  Margin="4"/>
         <!--执行流程-->
         <views:ProcessExecuteView Grid.Row="1"  Margin="4"/>
+
+        <Button x:Name="ButtonTest" Grid.Row="1" Grid.Column="1"></Button>
     </Grid>
 </Window>
