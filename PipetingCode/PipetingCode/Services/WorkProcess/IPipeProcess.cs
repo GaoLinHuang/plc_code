@@ -2,6 +2,9 @@
 
 namespace PipettingCode.Services
 {
+    /// <summary>
+    /// 加样臂执行接口
+    /// </summary>
     internal interface IPipeProcess
     {
         /// <summary>
