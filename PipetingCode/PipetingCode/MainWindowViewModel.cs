@@ -8,11 +8,27 @@ using PipettingCode.Services.Config;
 
 namespace PipettingCode
 {
+
+    #region 单例样例
+    internal class TestA
+    {
+        public void TestAA()
+        {
+
+        }
+
+    }
+    internal class TestB : SingletonNotifyBase<TestA>
+    {
+
+    }
+    #endregion
+
     internal class MainWindowViewModel : SingletonNotifyBase<MainWindowViewModel>
     {
         public MainWindowViewModel()
         {
-           
+            TestB.Instance.TestAA();
         }
 
        

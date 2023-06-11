@@ -31,5 +31,10 @@
         /// Y坐标
         /// </summary>
         public int Y { get; set; } = 100;
+
+        /// <summary>
+        /// Z坐标 待定
+        /// </summary>
+        public int Z { get; set; }
     }
 }

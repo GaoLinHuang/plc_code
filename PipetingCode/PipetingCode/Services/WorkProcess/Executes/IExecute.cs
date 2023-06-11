@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace PipettingCode.Services
 {
     /// <summary>
-    /// 执行接口
+    /// 流程执行接口
     /// </summary>
-    internal interface IExecute
+    public interface IExecute
     {
         /// <summary>
         /// 执行

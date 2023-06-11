@@ -126,6 +126,12 @@ namespace PipettingCode.Services
                     {
                         foreach (ConfigInfoItem configInfo in configs)
                         {
+                            var execute = ExecuteManager.Instance.GetExecute(configInfo.Id);
+                            if (execute!=null)
+                            {
+                                await execute.ExecuteAsync(configInfo);
+                            }  
+
                             Console.WriteLine($"执行步骤：{configInfo.Id}");
                             await Task.Delay(configInfo.ContinueTime);
                             if (_isStoping)

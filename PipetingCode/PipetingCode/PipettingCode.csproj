@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{1BF2989A-7118-4F89-BA1D-925B9287B54A}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <RootNamespace>PipettingCode</RootNamespace>
     <AssemblyName>PipettingCode</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
@@ -35,6 +35,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -74,9 +77,11 @@
     <Compile Include="Services\Config\ConfigInfoItem.cs" />
     <Compile Include="Services\WorkProcess\Executes\ExecuteManager.cs" />
     <Compile Include="Services\WorkProcess\Executes\IExecute.cs" />
+    <Compile Include="Services\WorkProcess\Executes\Step1.cs" />
     <Compile Include="Services\WorkProcess\IPipeProcess.cs" />
     <Compile Include="Services\WorkProcess\PipeProcessFour.cs" />
     <Compile Include="Services\Config\ProcessConfigService.cs" />
+    <Compile Include="TestB.cs" />
     <Compile Include="ViewModel\CommunicationStateViewModel.cs" />
     <Compile Include="ViewModel\PLCViewModel.cs" />
     <Compile Include="ViewModel\SampleViewModel.cs" />
@@ -94,6 +99,9 @@
       <DependentUpon>ProcessExecuteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessExecute\ProcessExecuteViewModel.cs" />
+    <Compile Include="Views\Window1.xaml.cs">
+      <DependentUpon>Window1.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -115,6 +123,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessExecute\ProcessExecuteView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -11,7 +11,7 @@ namespace PipettingCode.Services
 {
     public class ProcessConfigService : Singleton<ProcessConfigService>
     {
-
+        private string fileRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ProcessConfig");
         private readonly ConcurrentDictionary<string, ConfigInfo> _configInfoDic;
         public ProcessConfigService()
         {
@@ -26,7 +26,7 @@ namespace PipettingCode.Services
                 configInfos.Add(configInfo);
             }
 
-            var files = Directory.GetFiles(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "ProcessConfig"));
+            var files = Directory.GetFiles(fileRoot);
             foreach (var file in files)
             {
                 var configInfo = JsonRepository.TryParse<ConfigInfo>(file);
@@ -34,61 +34,61 @@ namespace PipettingCode.Services
             }
 
             Console.WriteLine();
-          //  List<ConfigInfo> s=new List<ConfigInfo>()
-          //{
-          //    new ConfigInfo()
-          //    {
-          //        Key = "process_1",
-          //        Title = "第一次",
-          //        IsEnable = true,
-          //        ConfigInfoItems = configInfos,
-          //    }
-          //};
-          
+            //  List<ConfigInfo> s = new List<ConfigInfo>()
+            //{
+            //    new ConfigInfo()
+            //    {
+            //        Key = "process_1",
+            //        Title = "第一次",
+            //        IsEnable = true,
+            //        ConfigInfoItems = configInfos,
+            //    }
+            //};
 
-          //_configInfoDic.TryAdd("process_1",
-          //      new ConfigInfo()
-          //      {
-          //          Key = "process_1",
-          //          Title = "第一次",
-          //          IsEnable = true,
-          //          ConfigInfoItems = configInfos,
-          //      }
-          //  );
 
-          //  _configInfoDic.TryAdd("process_2",
-          //      new ConfigInfo()
-          //      {
-          //          Key = "process_2",
-          //          Title = "第二次",
-          //          IsEnable = true,
-          //          ConfigInfoItems = configInfos,
-          //      }
-          //  );
+            _configInfoDic.TryAdd("process_1",
+                  new ConfigInfo()
+                  {
+                      Key = "process_1",
+                      Title = "第一次",
+                      IsEnable = true,
+                      ConfigInfoItems = configInfos,
+                  }
+              );
 
-          //  _configInfoDic.TryAdd("process_3",
-          //      new ConfigInfo()
-          //      {
-          //          Key = "process_3",
-          //          Title = "第三次",
-          //          IsEnable = true,
-          //          ConfigInfoItems = configInfos,
-          //      }
-          //  );
+            //  _configInfoDic.TryAdd("process_2",
+            //      new ConfigInfo()
+            //      {
+            //          Key = "process_2",
+            //          Title = "第二次",
+            //          IsEnable = true,
+            //          ConfigInfoItems = configInfos,
+            //      }
+            //  );
 
-          //  _configInfoDic.TryAdd("process_4",
-          //      new ConfigInfo()
-          //      {
-          //          Key = "process_4",
-          //          Title = "第四次",
-          //          IsEnable = true,
-          //          ConfigInfoItems = configInfos,
-          //      }
-          //  );
+            //  _configInfoDic.TryAdd("process_3",
+            //      new ConfigInfo()
+            //      {
+            //          Key = "process_3",
+            //          Title = "第三次",
+            //          IsEnable = true,
+            //          ConfigInfoItems = configInfos,
+            //      }
+            //  );
+
+            //  _configInfoDic.TryAdd("process_4",
+            //      new ConfigInfo()
+            //      {
+            //          Key = "process_4",
+            //          Title = "第四次",
+            //          IsEnable = true,
+            //          ConfigInfoItems = configInfos,
+            //      }
+            //  );
         }
 
         /// <summary>
-        /// 获取配置列表
+        /// 获取配置列表  大的流程的列表 如第一次 第二次  ....
         /// </summary>
         /// <returns></returns>
         public List<ConfigInfo> GetConfigInfos()
@@ -114,6 +114,10 @@ namespace PipettingCode.Services
         public void UpdateConfig(ConfigInfo configInfo)
         {
             _configInfoDic.AddOrUpdate(configInfo.Key, configInfo, (k, v) => v);
+            string fullFileName = Path.Combine(fileRoot, $"{configInfo.Key}.json");
+            //File.WriteAllText(fullFileName,configInfo.ToJson());
+
+            JsonRepository.Save(fullFileName, configInfo);
         }
     }
 }
