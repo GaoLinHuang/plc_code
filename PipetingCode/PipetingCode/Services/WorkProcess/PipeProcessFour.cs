@@ -85,8 +85,6 @@ namespace PipettingCode.Services
                 {
 
                     List<ConfigInfoItem> configs = _configService.GetConfigInfos(processName);
-
-                    var json = configs.ToJson();
                     bool notifyStop = false;
                     while (_isRunning && !notifyStop)
                     {
