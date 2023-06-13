@@ -9,9 +9,19 @@
     <UserControl.DataContext>
         <local:ProcessExecuteViewModel/>
     </UserControl.DataContext>
-    <StackPanel Grid.Row="1">
-        <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}" SelectedIndex="0"></ComboBox>
-        <Button Margin="2" Height="35" Width="80" Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
-        <Button Margin="2" Height="35" Width="80" Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
+    <StackPanel Orientation="Horizontal">
+        <StackPanel>
+            <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}" SelectedIndex="0"></ComboBox>
+            <Button Margin="2" Height="35" Width="80" Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
+            <Button Margin="2" Height="35" Width="80" Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
+        </StackPanel>
+     
+            <RichTextBox x:Name="RichTextBoxStatus"  Height="200"
+                         VerticalAlignment="Top"
+                         local:RichTextBoxHelper.RichText="{Binding RichText}" 
+                         BorderThickness="0" VerticalScrollBarVisibility="Auto" 
+                         Width="130" Background="Black" Foreground="Green">
+
+           </RichTextBox>
     </StackPanel>
 </UserControl>

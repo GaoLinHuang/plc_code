@@ -31,7 +31,14 @@ namespace PipettingCode
             TestB.Instance.TestAA();
         }
 
-       
+        private int _tabIndex = 0;
+
+        public int TabIndex
+        {
+            get => _tabIndex;
+            set => SetField(ref _tabIndex, value);
+        }
+
         // 终止实验
         private bool _KillExperiment = false;
 

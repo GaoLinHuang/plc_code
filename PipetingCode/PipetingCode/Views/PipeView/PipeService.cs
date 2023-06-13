@@ -433,7 +433,9 @@ namespace PipettingCode.Views
                 while (!result)
                 {
                     Thread.Sleep(10);
-                    result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort);
+                    mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort,
+                        Global_Parameter.IPAddress, Global_Parameter.IPPort);
+                    //result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort);
                     if (!result)
                     {
                         m_Countnum++;

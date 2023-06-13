@@ -11,7 +11,7 @@ namespace PipettingCode.Services
     /// <summary>
     /// 四管实现类
     /// </summary>
-    public class PipeProcessFour : IPipeProcess
+    public class PipeProcessFour : IPipeProcess, IProcessStatus
     {
         #region 字段
         /// <summary>
@@ -37,7 +37,11 @@ namespace PipettingCode.Services
         /// <summary>
         /// 用于通知停止的信号量
         /// </summary>
-        AutoResetEvent _stopResetEvent = new AutoResetEvent(false); ///
+        AutoResetEvent _stopResetEvent = new AutoResetEvent(false);
+
+        ///
+
+        private event Action<string> _processStatusCallBack; 
         #endregion
         #region 构造函数
         public PipeProcessFour(ProcessConfigService processConfig)
@@ -130,9 +134,11 @@ namespace PipettingCode.Services
                             if (execute!=null)
                             {
                                 await execute.ExecuteAsync(configInfo);
-                            }  
+                            }
 
-                            Console.WriteLine($"执行步骤：{configInfo.Id}");
+                            string msg = $"执行步骤：{configInfo.Id}";
+                            Console.WriteLine();
+                            _processStatusCallBack?.Invoke(msg);
                             await Task.Delay(configInfo.ContinueTime);
                             if (_isStoping)
                             {
@@ -200,6 +206,15 @@ namespace PipettingCode.Services
                   _isRunning = false;
               });
 
+        }
+
+        /// <summary>
+        /// 注册状态回调
+        /// </summary>
+        /// <param name="onCallBack"></param>
+        public void RegisterStatusCallBack(Action<string> onCallBack)
+        {
+            _processStatusCallBack += onCallBack;
         }
     }
 }

@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Base;
 using PipettingCode.Common;
+using System.Windows.Threading;
 
 namespace PipettingCode.Views
 {
@@ -19,15 +20,19 @@ namespace PipettingCode.Views
             ExecuteProcessCommand = new DelegateCommand(OnExecuteProcess);
             StopExecuteProcessCommand = new DelegateCommand(OnStopExecuteProcess);
             ConfigInfos = new ObservableCollection<ConfigInfo>(ProcessConfigService.Instance.GetConfigInfos());
+            MainSingletonService.Instance.ProcessStatus.RegisterStatusCallBack((msg) =>
+            {
+                RichText = msg;
+            });
         }
 
         /// <summary>
         /// 停止
         /// </summary>
         /// <param name="obj"></param>
-        private  void OnStopExecuteProcess(object obj)
+        private void OnStopExecuteProcess(object obj)
         {
-             MainSingletonService.Instance.PipeProcess.StopCurrentProcess();
+            MainSingletonService.Instance.PipeProcess.StopCurrentProcess();
         }
 
         /// <summary>
@@ -56,5 +61,12 @@ namespace PipettingCode.Views
         /// 停止
         /// </summary>
         public ICommand StopExecuteProcessCommand { get; }
+
+        private string richText;
+        public string RichText
+        {
+            get => richText;
+            set => SetField(ref richText, value);
+        }
     }
 }

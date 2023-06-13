@@ -79,6 +79,7 @@
     <Compile Include="Services\WorkProcess\Executes\IExecute.cs" />
     <Compile Include="Services\WorkProcess\Executes\Step1.cs" />
     <Compile Include="Services\WorkProcess\IPipeProcess.cs" />
+    <Compile Include="Services\WorkProcess\IProcessStatus.cs" />
     <Compile Include="Services\WorkProcess\PipeProcessFour.cs" />
     <Compile Include="Services\Config\ProcessConfigService.cs" />
     <Compile Include="TestB.cs" />
