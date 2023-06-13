@@ -13,5 +13,10 @@ namespace PipettingCode.Services
         /// </summary>
         /// <param name="onCallBack"></param>
         void RegisterStatusCallBack(Action<string> onCallBack);
+        /// <summary>
+        /// 通知
+        /// </summary>
+        /// <param name="msg"></param>
+        void NotifyMsg(string msg);
     }
 }

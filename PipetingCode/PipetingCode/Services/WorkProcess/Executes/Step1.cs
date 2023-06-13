@@ -22,8 +22,4 @@ namespace PipettingCode.Services
         }
     }
 
-    public class Step5 : Step1
-    {
-
-    }
 }

@@ -137,9 +137,9 @@ namespace PipettingCode.Services
                             }
 
                             string msg = $"执行步骤：{configInfo.Id}";
-                            Console.WriteLine();
+                            Console.WriteLine(msg);
                             _processStatusCallBack?.Invoke(msg);
-                            await Task.Delay(configInfo.ContinueTime);
+                            //await Task.Delay(configInfo.ContinueTime);
                             if (_isStoping)
                             {
                                 notifyStop = await TryStop();
@@ -215,6 +215,15 @@ namespace PipettingCode.Services
         public void RegisterStatusCallBack(Action<string> onCallBack)
         {
             _processStatusCallBack += onCallBack;
+        }
+
+        /// <summary>
+        /// 通知
+        /// </summary>
+        /// <param name="msg"></param>
+        public void NotifyMsg(string msg)
+        {
+            _processStatusCallBack?.Invoke(msg);
         }
     }
 }

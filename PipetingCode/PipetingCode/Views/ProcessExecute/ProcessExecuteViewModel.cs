@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Windows.Base;
 using PipettingCode.Common;
@@ -22,7 +23,11 @@ namespace PipettingCode.Views
             ConfigInfos = new ObservableCollection<ConfigInfo>(ProcessConfigService.Instance.GetConfigInfos());
             MainSingletonService.Instance.ProcessStatus.RegisterStatusCallBack((msg) =>
             {
-                RichText = msg;
+                Application.Current.Dispatcher.Invoke(() =>
+                {
+                    RichText = msg;
+                });
+
             });
         }
 
