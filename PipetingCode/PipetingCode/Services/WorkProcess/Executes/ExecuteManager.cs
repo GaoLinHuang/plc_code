@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Windows.Base;
 
@@ -14,10 +13,6 @@ namespace PipettingCode.Services
         public ExecuteManager()
         {
             executes = new Dictionary<int, IExecute>();
-            //executes.Add(1,new Step1());
-            //executes.Add(3,new Step3());
-            //executes.Add(4,new Step4());
-            //executes.Add(5,new Step5());
 
             var types = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(a => a.GetTypes().
@@ -31,8 +26,6 @@ namespace PipettingCode.Services
                     executes[index]=obj;
                 }
             }
-
-            Console.WriteLine();
         }
         private Dictionary<int, IExecute> executes;
 

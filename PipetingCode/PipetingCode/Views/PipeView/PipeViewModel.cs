@@ -6,10 +6,12 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Threading;
 using System;
+using Windows.Base;
+using System.Windows;
 
 namespace PipettingCode.Views
 {
-    public class PipettingViewModel
+    public class PipettingViewModel : Singleton<PipettingViewModel>
     {
         //private static object _locker = new object();
         private static TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();
@@ -31,6 +33,28 @@ namespace PipettingCode.Views
                 mSamplesize = PipettingParameter.TxtNumberOfStitches,//样本数量
             };
         }
+
+        public Task<bool> MoveX(int x)
+        {
+            return Task.Run(() =>
+            {
+                var mCommData = CreateTcpCommData();
+                mCommData.mMoveTargetX = x;
+                var result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);
+                return result>0; 
+            });
+        }
+        public Task<bool> MoveY(int y)
+        {
+            return Task.Run(() =>
+            {
+                var mCommData = CreateTcpCommData();
+                mCommData.mMoveTargetY = y;             // 5.Y轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                var result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_Y_AxisPosition(mCommData);                    //X轴移到取针位置坐标
+                return result > 0;
+            });
+        }
+
         #region 0 连接网络
 
         #region 0.1 断开网络
@@ -1237,7 +1261,7 @@ namespace PipettingCode.Views
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
                 int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
-                    mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
                 //}
                 //else
                 //{
@@ -1300,10 +1324,10 @@ namespace PipettingCode.Views
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
                 int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
-                    mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
 
-                    int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
-                    mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;
+                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;
                 //}
                 //else
                 //{
@@ -1567,14 +1591,8 @@ namespace PipettingCode.Views
         #region 5.4 脱针
         public int OffNeedle(int count)
         {
-            Task<int> task1 = Task.Run(() =>
-            {
-                return OffNeedle_MoveX(count);
-            });
-            Task<int> task2 = Task.Run(() =>
-            {
-                return OffNeedle_MoveY(count);
-            });
+            Task<int> task1 = Task.Run(() => OffNeedle_MoveX(count));
+            Task<int> task2 = Task.Run(() => OffNeedle_MoveY(count));
 
             Task.WaitAll(task1, task2);           // 两个动作完成后，才能继续下一个动作
 
