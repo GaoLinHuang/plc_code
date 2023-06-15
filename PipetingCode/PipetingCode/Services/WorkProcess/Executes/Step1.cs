@@ -19,11 +19,7 @@ namespace PipettingCode.Services
         public async Task<bool> ExecuteAsync(ConfigInfoItem config)
         {
             //调用厂家提供的接口
-            var res = await Application.Current.Dispatcher.InvokeAsync(() =>
-               {
-                   return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
-
-               });
+            var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel));
             if (res == MessageBoxResult.Cancel)
             {
                 return false;
