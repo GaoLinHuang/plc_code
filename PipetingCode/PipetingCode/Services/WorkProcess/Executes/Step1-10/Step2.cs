@@ -24,7 +24,7 @@ namespace PipettingCode.Services
             {
                 return false;
             }
-            for (int i = 0; i < 96; i++)
+            for (int i = 0; i < 24; i++)//96孔是4*24  也就是24次
             {
                 //取针
                 PipettingViewModel.Instance.TakeNeedle(i);
