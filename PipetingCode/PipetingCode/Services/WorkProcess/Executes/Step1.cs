@@ -24,13 +24,13 @@ namespace PipettingCode.Services
                    return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
 
                });
-            if (res== MessageBoxResult.Cancel)
+            if (res == MessageBoxResult.Cancel)
             {
                 return false;
             }
 
             var result = PipettingViewModel.Instance.TakeNeedle(0);
-            if (result==-1)//取针失败
+            if (result == -1)//取针失败
             {
                 return false;
             }
@@ -40,9 +40,15 @@ namespace PipettingCode.Services
             for (int i = 0; i < config.RepeatTime; i++)
             {
                 //吸液
-
+                PipettingViewModel.Instance.Pipetting_Imbibition(0);
                 // 吐液
+                PipettingViewModel.Instance.Pipetting_Injection(0);//注液
             }
+            await Task.WhenAll(PipettingViewModel.Instance.MoveX(config.X),
+                PipettingViewModel.Instance.MoveY(config.Y));//移动到脱针位置
+
+            PipettingViewModel.Instance.Pipetting_OffNeedle(0);//脱针
+
             //执行流程
             return await Task.FromResult(true);
         }

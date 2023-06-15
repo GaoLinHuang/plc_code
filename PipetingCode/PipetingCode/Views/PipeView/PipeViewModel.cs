@@ -34,6 +34,11 @@ namespace PipettingCode.Views
             };
         }
 
+        /// <summary>
+        /// 移动X轴
+        /// </summary>
+        /// <param name="x"></param>
+        /// <returns></returns>
         public Task<bool> MoveX(int x)
         {
             return Task.Run(() =>
@@ -44,6 +49,11 @@ namespace PipettingCode.Views
                 return result>0; 
             });
         }
+        /// <summary>
+        /// 移动Y轴
+        /// </summary>
+        /// <param name="y"></param>
+        /// <returns></returns>
         public Task<bool> MoveY(int y)
         {
             return Task.Run(() =>
