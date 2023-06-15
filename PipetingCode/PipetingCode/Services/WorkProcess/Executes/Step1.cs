@@ -44,10 +44,8 @@ namespace PipettingCode.Services
                 // 吐液
                 PipettingViewModel.Instance.Pipetting_Injection(0);//注液
             }
-            await Task.WhenAll(PipettingViewModel.Instance.MoveX(config.X),
-                PipettingViewModel.Instance.MoveY(config.Y));//移动到脱针位置
 
-            PipettingViewModel.Instance.Pipetting_OffNeedle(0);//脱针
+            PipettingViewModel.Instance.OffNeedle(0);//脱针
 
             //执行流程
             return await Task.FromResult(true);

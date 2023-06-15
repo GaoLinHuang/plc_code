@@ -41,13 +41,13 @@ namespace PipettingCode.Services
 
         ///
 
-        private event Action<string> _processStatusCallBack; 
+        private event Action<string> _processStatusCallBack;
         #endregion
         #region 构造函数
         public PipeProcessFour(ProcessConfigService processConfig)
         {
             _configService = processConfig;
-        } 
+        }
         #endregion
         /// <summary>
         /// 初始化
@@ -131,9 +131,14 @@ namespace PipettingCode.Services
                         foreach (ConfigInfoItem configInfo in configs)
                         {
                             var execute = ExecuteManager.Instance.GetExecute(configInfo.Id);
-                            if (execute!=null)
+                            if (execute != null)
                             {
-                                await execute.ExecuteAsync(configInfo);
+                                var res = await execute.ExecuteAsync(configInfo);
+                                if (res==false)
+                                {
+                                    _isRunning=false;
+                                    break;
+                                }
                             }
 
                             string msg = $"执行步骤：{configInfo.Id}";
