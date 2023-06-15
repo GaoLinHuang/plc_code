@@ -37,9 +37,9 @@ namespace PipettingCode.Services
                 //步骤三的操作
                 for (int j = 0; j < config.RepeatTime; j++)
                 {
-                    PipettingViewModel.Instance.TakeNeedle(i);//吸液量
+                    PipettingViewModel.Instance.Pipetting_Imbibition(i);//当前位置吸液
 
-                    PipettingViewModel.Instance.OffNeedle(i);//吐液
+                    PipettingViewModel.Instance.Pipetting_Injection(i);//当前位置吐液
                 }
 
                 //脱针
