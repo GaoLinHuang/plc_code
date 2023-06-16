@@ -41,6 +41,12 @@ namespace Windows.Base.Json
         /// <returns></returns>
         public static bool Save<T>(string fileName, T obj)
         {
+            if (!File.Exists(fileName))
+            {
+                using (File.Create(fileName))
+                {
+                }
+            }
             File.WriteAllText(fileName, obj.ToJson());
             return true;
         }

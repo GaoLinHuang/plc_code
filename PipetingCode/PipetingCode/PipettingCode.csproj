@@ -75,6 +75,7 @@
     <Compile Include="Models\SampleModel.cs" />
     <Compile Include="Services\Config\ConfigInfo.cs" />
     <Compile Include="Services\Config\ConfigInfoItem.cs" />
+    <Compile Include="Services\Config\ExtendsConfig.cs" />
     <Compile Include="Services\WorkProcess\Executes\ExecuteManager.cs" />
     <Compile Include="Services\WorkProcess\Executes\IExecute.cs" />
     <Compile Include="Services\WorkProcess\Executes\Step1-10\Step1.cs" />
@@ -119,6 +120,10 @@
       <DependentUpon>ProcessExecuteView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessExecute\ProcessExecuteViewModel.cs" />
+    <Compile Include="Views\SettingView\SettingViewModel.cs" />
+    <Compile Include="Views\SettingView\SettingWindow.xaml.cs">
+      <DependentUpon>SettingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Window1.xaml.cs">
       <DependentUpon>Window1.xaml</DependentUpon>
     </Compile>
@@ -146,6 +151,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\SettingView\SettingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Window1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -170,6 +179,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ProcessConfig\ExtendsConfig.json" />
     <None Include="ProcessConfig\process.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

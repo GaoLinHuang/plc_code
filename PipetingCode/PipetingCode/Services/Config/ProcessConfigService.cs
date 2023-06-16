@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using Windows.Base;
 using Windows.Base.Json;
+using PipettingControl;
+using System.Windows;
 
 namespace PipettingCode.Services
 {
@@ -15,7 +17,7 @@ namespace PipettingCode.Services
         private readonly ConcurrentDictionary<string, ConfigInfo> _configInfoDic;
         public ProcessConfigService()
         {
-           
+            _extendsConfig = new ExtendsConfig();
             _configInfoDic = new ConcurrentDictionary<string, ConfigInfo>();
             //TODO 从本地中加载相关的配置
             List<ConfigInfoItem> configInfos = new List<ConfigInfoItem>();
@@ -118,6 +120,62 @@ namespace PipettingCode.Services
             //File.WriteAllText(fullFileName,configInfo.ToJson());
 
             JsonRepository.Save(fullFileName, configInfo);
+        }
+
+        private ExtendsConfig _extendsConfig;
+
+        /// <summary>
+        /// 更新信息扩展信息
+        /// </summary>
+        /// <param name="extendsConfig"></param>
+        public void Update(ExtendsConfig extendsConfig)
+        {
+            _extendsConfig = extendsConfig;
+            string fullFileName = Path.Combine(fileRoot, "ExtendsConfig.json");
+            JsonRepository.Save(fullFileName, extendsConfig);
+
+        }
+
+        /// <summary>
+        /// 扩充的信息
+        /// </summary>
+        /// <returns></returns>
+        public ExtendsConfig GetExtendsConfig() => _extendsConfig;
+
+        /// <summary>
+        /// 获取磁力架上的96孔板的坐标
+        /// </summary>
+        /// <param name="index"> 当前次数，0-13</param>
+        /// <returns></returns>
+        public Point GetMagneticFramePoint(int index)
+        {
+            int internalValueX = (_extendsConfig.MagneticFrameRight - _extendsConfig.MagneticFrameLeft) / 11;         // 水平间距
+
+            int x = _extendsConfig.MagneticFrameLeft + (index / 2) * internalValueX;
+
+            int internalValueY = (_extendsConfig.MagneticFrameBottom - _extendsConfig.MagneticFrameTop) / 7;         // 水平间距
+
+            int y = _extendsConfig.MagneticFrameTop + (index % 2) * internalValueY;
+
+            return new Point(x, y);
+        }
+
+        /// <summary>
+        /// 获取磁力架上的96孔板的坐标
+        /// </summary>
+        /// <param name="index"> 当前次数，0-13</param>
+        /// <returns></returns>
+        public Point GetOrificePlatePoint(int index)
+        {
+            int internalValueX = (_extendsConfig.OrificePlateRight - _extendsConfig.OrificePlateLeft) / 11;         // 水平间距
+
+            int x = _extendsConfig.OrificePlateLeft + (index / 2) * internalValueX;
+
+            int internalValueY = (_extendsConfig.OrificePlateBottom - _extendsConfig.OrificePlateTop) / 7;         // 水平间距
+
+            int y = _extendsConfig.OrificePlateTop + (index % 2) * internalValueY;
+
+            return new Point(x, y);
         }
     }
 }
