@@ -11,8 +11,9 @@ namespace PipettingCode.Services
         /// <summary>
         /// 执行
         /// </summary>
+        /// <param name="configItem"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        Task<bool> ExecuteAsync(ConfigInfoItem config);
+        Task<bool> ExecuteAsync(ConfigInfoItem configItem,ConfigInfo config);
     }
 }

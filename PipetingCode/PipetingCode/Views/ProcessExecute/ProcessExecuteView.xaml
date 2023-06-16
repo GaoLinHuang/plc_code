@@ -9,19 +9,99 @@
     <UserControl.DataContext>
         <local:ProcessExecuteViewModel/>
     </UserControl.DataContext>
-    <StackPanel Orientation="Horizontal">
-        <StackPanel>
-            <ComboBox Width="80" Height="35" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}" SelectedIndex="0"></ComboBox>
-            <Button Margin="2" Height="35" Width="80" Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
-            <Button Margin="2" Height="35" Width="80" Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
-        </StackPanel>
-     
+
+    <UserControl.Resources>
+        <Style TargetType="Border">
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="10"/>
+            <Setter Property="Margin" Value="10"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Width" Value="100"/>
+            <!--<Setter Property="Height" Value="35"/>-->
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="IsEnabled" Value="False"/>
+        </Style>
+
+        <Style TargetType="TextBlock">
+            <!--<Setter Property="Width" Value="100"/>-->
+            <!--<Setter Property="Height" Value="35"/>-->
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="100"/>
+            <!--<Setter Property="Height" Value="35"/>-->
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="6"/>
+
+        </Style>
+    </UserControl.Resources>
+   <Border>
+        <StackPanel Orientation="Horizontal">
+            <StackPanel>
+                <TextBlock Text="纯化流程"></TextBlock>
+                <ComboBox Margin="6" Width="80" HorizontalAlignment="Left" ItemsSource="{Binding ConfigInfos}" DisplayMemberPath="Title" SelectedItem="{Binding SelectItem}" SelectedIndex="0"></ComboBox>
+                <Button Content="执行流程" Command="{Binding ExecuteProcessCommand}"></Button>
+                <Button Content="停止" Command="{Binding StopExecuteProcessCommand}"></Button>
+
+                <StackPanel Orientation="Vertical" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="磁珠混匀次数："/>
+                        <TextBox Text="{Binding SelectItem.MagneticBeadTimes}" Width="100"></TextBox>
+                        <TextBlock Text="次"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="磁珠量："/>
+                        <TextBox Text="{Binding SelectItem.MagneticBeadCapacity}" Width="100"></TextBox>
+                        <TextBlock Text="ul"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="样本混匀次数:"/>
+                        <TextBox Text="{Binding SelectItem.SampleBeadTimes}" Width="100"></TextBox>
+                        <TextBlock Text="次"></TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="第一次乙醇量:"/>
+                        <TextBox Text="{Binding SelectItem.EthanolCapacityFirst}" Width="100"></TextBox>
+                        <TextBlock Text="ul"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="第二次乙醇量:"/>
+                        <TextBox Text="{Binding SelectItem.EthanolCapacitySecond}" Width="100"></TextBox>
+                        <TextBlock Text="ul"></TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="第一次洗脱液量:"/>
+                        <TextBox Text="{Binding SelectItem.WashCapacityFirst}" Width="100"></TextBox>
+                        <TextBlock Text="ul"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="第二次洗脱液量:"/>
+                        <TextBox Text="{Binding SelectItem.WashCapacitySecond}" Width="100"></TextBox>
+                        <TextBlock Text="ul"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+
+
+            </StackPanel>
+
             <RichTextBox x:Name="RichTextBoxStatus"  Height="200"
                          VerticalAlignment="Top"
                          local:RichTextBoxHelper.RichText="{Binding RichText}" 
                          BorderThickness="0" VerticalScrollBarVisibility="Auto" 
                          Width="130" Background="Black" Foreground="Green">
 
-           </RichTextBox>
-    </StackPanel>
+            </RichTextBox>
+        </StackPanel>
+    </Border>
 </UserControl>

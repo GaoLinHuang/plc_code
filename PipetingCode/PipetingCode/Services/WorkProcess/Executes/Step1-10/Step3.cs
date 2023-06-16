@@ -9,7 +9,7 @@ namespace PipettingCode.Services
 {
     public class Step3: IExecute
     {
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             //for (int i = 0; i < config.RepeatTime; i++)
             //{

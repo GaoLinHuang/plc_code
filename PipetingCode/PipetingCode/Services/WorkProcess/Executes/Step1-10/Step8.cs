@@ -9,7 +9,7 @@ namespace PipettingCode.Services
 {
     internal class Step8 : IExecute
     {
-        public Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             Console.WriteLine("加入200ul乙醇，静置30S");
             return Task.FromResult(true);

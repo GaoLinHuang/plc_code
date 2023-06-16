@@ -10,10 +10,10 @@ namespace PipettingCode.Services
 {
     internal class Step4:IExecute
     {
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
-            Console.WriteLine($"等待{config.ContinueTime/1000}s");
-            await Task.Delay(TimeSpan.FromMilliseconds(config.ContinueTime));
+            Console.WriteLine($"等待{configItem.ContinueTime/1000}s");
+            await Task.Delay(TimeSpan.FromMilliseconds(configItem.ContinueTime));
             
             return await Application.Current.Dispatcher.InvokeAsync(() =>
             {

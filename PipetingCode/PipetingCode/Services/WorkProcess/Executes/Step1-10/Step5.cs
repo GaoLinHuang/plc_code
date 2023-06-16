@@ -10,7 +10,7 @@ namespace PipettingCode.Services
 {
     internal class Step5:IExecute
     {
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             Console.WriteLine("将样本转移到磁力板上");
             return await Application.Current.Dispatcher.InvokeAsync(() =>

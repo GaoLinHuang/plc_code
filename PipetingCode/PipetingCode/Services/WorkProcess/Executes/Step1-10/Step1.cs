@@ -14,9 +14,10 @@ namespace PipettingCode.Services
         /// <summary>
         /// 磁珠充分混匀
         /// </summary>
+        /// <param name="configItem"></param>
         /// <param name="config"></param>
         /// <returns></returns>
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             //调用厂家提供的接口
             var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel));
@@ -31,14 +32,15 @@ namespace PipettingCode.Services
                 return false;
             }
 
-            await Task.WhenAll(PipettingViewModel.Instance.MoveX(config.X),
-                PipettingViewModel.Instance.MoveY(config.Y));//移动到磁珠位置
-            for (int i = 0; i < config.RepeatTime; i++)
+            await Task.WhenAll(PipettingViewModel.Instance.MoveX(configItem.X),
+                PipettingViewModel.Instance.MoveY(configItem.Y));//移动到磁珠位置
+            for (int i = 0; i < configItem.RepeatTime; i++)
             {
                 //吸液
-                PipettingViewModel.Instance.Pipetting_Imbibition(0);
+                PipettingViewModel.Instance.Pipetting_Imbibition(0, (int)config.MagneticBeadCapacity);//磁珠
                 // 吐液
-                PipettingViewModel.Instance.Pipetting_Injection(0);//注液
+                PipettingViewModel.Instance.Pipetting_Injection(0, (int)config.MagneticBeadCapacity);//注液
+                await Task.Delay(200);
             }
 
             PipettingViewModel.Instance.OffNeedle(0);//脱针

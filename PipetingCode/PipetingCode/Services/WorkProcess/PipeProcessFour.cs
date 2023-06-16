@@ -124,16 +124,16 @@ namespace PipettingCode.Services
                 {
 
                     //获取配置
-                    List<ConfigInfoItem> configs = _configService.GetConfigInfos(processName);
+                   ConfigInfo config = _configService.GetConfigInfo(processName);
                     bool notifyStop = false;//监听当前执行流程是否请求取消
                     while (_isRunning && !notifyStop)
                     {
-                        foreach (ConfigInfoItem configInfo in configs)
+                        foreach (ConfigInfoItem configInfo in config.ConfigInfoItems)
                         {
                             var execute = ExecuteManager.Instance.GetExecute(configInfo.Id);
                             if (execute != null)
                             {
-                                var res = await execute.ExecuteAsync(configInfo);
+                                var res = await execute.ExecuteAsync(configInfo, config);
                                 if (res==false)
                                 {
                                     _isRunning=false;

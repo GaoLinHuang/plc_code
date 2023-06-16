@@ -46,7 +46,7 @@ namespace PipettingCode.Views
                 var mCommData = CreateTcpCommData();
                 mCommData.mMoveTargetX = x;
                 var result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);
-                return result>0; 
+                return result > 0;
             });
         }
         /// <summary>
@@ -646,7 +646,7 @@ namespace PipettingCode.Views
         #endregion
 
         #region 3.3 多通道同时吸液
-        public int Pipetting_Imbibition(int count)
+        public int Pipetting_Imbibition(int count, int? mLiquidabsorption = null)
         {
             int result = -1;
             Tcp_CommData mCommData = CreateTcpCommData();
@@ -682,7 +682,7 @@ namespace PipettingCode.Views
                 mParameter.mSuctionSpeed = PipettingParameter.MtxtVolumeSpeed;              //9.1000//吸液速度(μl/s):
                 mParameter.mSuctionAccSpeed = PipettingParameter.MtxtVolumeAccSpeed;           //10.700//吸液加速度(μl/s^2):
                 mParameter.mImmersionDepth = PipettingParameter.MtxtImmersionDepth;           //11.20//浸没深度(步):
-                mParameter.mLiquidabsorption = PipettingParameter.TxtSuctionVolume;             //12.吸液量
+                mParameter.mLiquidabsorption = mLiquidabsorption ?? PipettingParameter.TxtSuctionVolume;             //12.吸液量
                 mParameter.mRegurgitationvolume = PipettingParameter.TxtRegurgitation;             //13.回吐量
                 mParameter.mRetrusionHeight = PipettingParameter.TxtRetrusionHeight;           //14.回吐高度
                 mParameter.mHeightLimited = PipettingParameter.MtxtHeightLimited;            //15.液面探测的限制高度
@@ -1319,7 +1319,7 @@ namespace PipettingCode.Views
         #endregion
 
         #region 4.3 多通道同时注液
-        public int Pipetting_Injection(int count)
+        public int Pipetting_Injection(int count, int? mInjectionPumpSpace = null)
         {
             int result = -1;
             Tcp_CommData mCommData = CreateTcpCommData();
@@ -1350,7 +1350,7 @@ namespace PipettingCode.Views
                 mParameter.mSamplesize = PipettingParameter.TxtNumberOfStitches;          //6.样本数量; 
                 mParameter.mTipGap = PipettingParameter.TxtTipClearance;              //7.30针尖空气间隙(μl):
                 mParameter.mNeedleTailGap = PipettingParameter.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
-                mParameter.mInjectionPumpSpace = PipettingParameter.MInjectionPumpSpace;          //9.注液量
+                mParameter.mInjectionPumpSpace = mInjectionPumpSpace ?? PipettingParameter.MInjectionPumpSpace;          //9.注液量
                 mParameter.mInjectionPumpSpeed = PipettingParameter.MInjectionPumpSpeed;          //10.注液速度
                 mParameter.mInjectionPumpAccSpeed = PipettingParameter.MInjectionPumpAccSpeed;       //11.注液加速度(μl/s^2):
                 mParameter.mInjectionHeight = PipettingParameter.MInjectionHeight;             //12.注液高度(步):

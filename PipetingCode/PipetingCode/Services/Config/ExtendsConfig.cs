@@ -40,5 +40,38 @@
         /// </summary>
         public int OrificePlateBottom { get; set; }
 
+        /// <summary>
+        /// 洗涤液位置 左
+        /// </summary>
+        public int WashLeft { get; set; }
+        /// <summary>
+        /// 洗涤液位置 上
+        /// </summary>
+        public int WashTop { get; set; }
+        /// <summary>
+        /// 洗涤液位置 右
+        /// </summary>
+        public int WashRight { get; set; }
+        /// <summary>
+        /// 洗涤液位置 下
+        /// </summary>
+        public int WashBottom { get; set; }
+
+        /// <summary>
+        /// 乙醇液位置 左
+        /// </summary>
+        public int EthanolLeft { get; set; }
+        /// <summary>
+        /// 乙醇液位置 上
+        /// </summary>
+        public int EthanolTop { get; set; }
+        /// <summary>
+        /// 乙醇液位置 右
+        /// </summary>
+        public int EthanolRight { get; set; }
+        /// <summary>
+        /// 乙醇液位置 下
+        /// </summary>
+        public int EthanolBottom { get; set; }
     }
 }

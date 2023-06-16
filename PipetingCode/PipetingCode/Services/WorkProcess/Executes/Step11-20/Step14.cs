@@ -9,7 +9,7 @@ namespace PipettingCode.Services
 {
     internal class Step14 : IExecute
     {
-        public Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             Console.WriteLine("吸取澄清液，丢弃废液及枪头");
             return Task.FromResult(true);

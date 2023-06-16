@@ -11,9 +11,9 @@ namespace PipettingCode.Services
 {
     internal class Step2 : IExecute
     {
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
-            Console.WriteLine($"样本孔加入{config.Capacity}ul磁珠");
+            Console.WriteLine($"样本孔加入{configItem.Capacity}ul磁珠");
             var res = await Application.Current.Dispatcher.InvokeAsync(() =>
             {
                 return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
@@ -35,7 +35,7 @@ namespace PipettingCode.Services
                 PipettingViewModel.Instance.Injection(i);
 
                 //步骤三的操作
-                for (int j = 0; j < config.RepeatTime; j++)
+                for (int j = 0; j < configItem.RepeatTime; j++)
                 {
                     PipettingViewModel.Instance.Pipetting_Imbibition(i);//当前位置吸液
 

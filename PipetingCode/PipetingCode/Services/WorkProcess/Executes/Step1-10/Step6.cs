@@ -10,7 +10,7 @@ namespace PipettingCode.Services
 {
     internal class Step6 : IExecute
     {
-        public async Task<bool> ExecuteAsync(ConfigInfoItem config)
+        public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             return await Application.Current.Dispatcher.InvokeAsync(() =>
             {

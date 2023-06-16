@@ -24,6 +24,6 @@
         <!--执行流程-->
         <views:ProcessExecuteView Grid.Row="0" Grid.Column="1"  Margin="4"/>
 
-        <Button x:Name="ButtonSetting" Grid.Row="1" Grid.Column="1" Height="35" Width="120" Content="设置" Click="ButtonSetting_OnClick"></Button>
+        <Button x:Name="ButtonSetting" Visibility="Visible" Grid.Row="1" Grid.Column="1" Height="35" Width="120" Content="设置" Click="ButtonSetting_OnClick"></Button>
     </Grid>
 </Window>

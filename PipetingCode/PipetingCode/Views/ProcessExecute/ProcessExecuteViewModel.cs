@@ -54,10 +54,15 @@ namespace PipettingCode.Views
         /// 流程列表
         /// </summary>
         public ObservableCollection<ConfigInfo> ConfigInfos { get; }
+        private ConfigInfo _selectItem;
         /// <summary>
         /// 当前选中的流程
         /// </summary>
-        public ConfigInfo SelectItem { get; set; }
+        public ConfigInfo SelectItem
+        {
+            get => _selectItem;
+            set => SetField(ref _selectItem, value);
+        }
         /// <summary>
         /// 开始执行
         /// </summary>

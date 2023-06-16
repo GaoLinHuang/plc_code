@@ -31,8 +31,18 @@ namespace PipettingCode.Services
             var files = Directory.GetFiles(fileRoot);
             foreach (var file in files)
             {
-                var configInfo = JsonRepository.TryParse<ConfigInfo>(file);
-                _configInfoDic.TryAdd(configInfo.Key, configInfo);
+                var fileName = Path.GetFileName(file);
+                if (fileName.StartsWith("process"))
+                {
+                    var configInfo = JsonRepository.TryParse<ConfigInfo>(file);
+                    _configInfoDic.TryAdd(configInfo.Key, configInfo);
+                }
+
+                if (fileName.StartsWith("ExtendsConfig"))
+                {
+                    _extendsConfig = JsonRepository.TryParse<ExtendsConfig>(file);
+
+                }
             }
 
             Console.WriteLine();
@@ -95,7 +105,9 @@ namespace PipettingCode.Services
         /// <returns></returns>
         public List<ConfigInfo> GetConfigInfos()
         {
-            return _configInfoDic.Values.ToList();
+            var list = _configInfoDic.Values.ToList();
+            list.Sort((x, y) => x.Index - y.Index);
+            return list;
         }
         /// <summary>
         /// 获取配置项
@@ -107,6 +119,17 @@ namespace PipettingCode.Services
             _configInfoDic.TryGetValue(processName, out var value);
             return value?.ConfigInfoItems ?? new List<ConfigInfoItem>();
         }
+        /// <summary>
+        /// 获取配置项
+        /// </summary>
+        /// <param name="processName"></param>
+        /// <returns></returns>
+        public ConfigInfo GetConfigInfo(string processName)
+        {
+            _configInfoDic.TryGetValue(processName, out var value);
+            return value;
+        }
+
 
         /// <summary>
         /// 更新配置
