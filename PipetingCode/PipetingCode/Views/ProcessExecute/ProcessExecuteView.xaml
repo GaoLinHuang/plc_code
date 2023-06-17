@@ -90,12 +90,18 @@
                         <TextBox Text="{Binding SelectItem.WashCapacitySecond}" Width="100"></TextBox>
                         <TextBlock Text="ul"></TextBlock>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="洗脱剂混匀次数:"/>
+                    <TextBox Text="{Binding SelectItem.WashBeadTimes}" Width="100"></TextBox>
+                    <TextBlock Text="次"></TextBlock>
                 </StackPanel>
+            </StackPanel>
 
 
             </StackPanel>
 
             <RichTextBox x:Name="RichTextBoxStatus"  Height="200"
+                         Visibility="Collapsed"
                          VerticalAlignment="Top"
                          local:RichTextBoxHelper.RichText="{Binding RichText}" 
                          BorderThickness="0" VerticalScrollBarVisibility="Auto" 

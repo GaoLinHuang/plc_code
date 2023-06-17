@@ -39,7 +39,7 @@ namespace PipettingCode.Views
         {
             MainSingletonService.Instance.PipeProcess.StopCurrentProcess();
         }
-
+        
         /// <summary>
         /// 开始执行
         /// </summary>
@@ -47,6 +47,7 @@ namespace PipettingCode.Views
 
         private async void OnExecuteProcess(object obj)
         {
+            PipettingViewModel.Instance.Pipetting_Initial(0);
             await MainSingletonService.Instance.PipeProcess.InitAsync();
             await MainSingletonService.Instance.PipeProcess.StartProcess(SelectItem.Key);
         }

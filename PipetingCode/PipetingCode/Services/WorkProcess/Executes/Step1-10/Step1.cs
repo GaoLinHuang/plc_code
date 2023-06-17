@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using PipettingCode.Services.Config;
 using PipettingCode.Views;
+using PipettingControl;
 
 namespace PipettingCode.Services
 {
@@ -32,14 +33,32 @@ namespace PipettingCode.Services
                 return false;
             }
 
-            await Task.WhenAll(PipettingViewModel.Instance.MoveX(configItem.X),
-                PipettingViewModel.Instance.MoveY(configItem.Y));//移动到磁珠位置
-            for (int i = 0; i < configItem.RepeatTime; i++)
+            //await Task.WhenAll(PipettingViewModel.Instance.MoveX(configItem.X),
+            //    PipettingViewModel.Instance.MoveY(configItem.Y));//移动到磁珠位置
+
+
+            Global_Parameter.TubersStartX = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadLeft;
+            Global_Parameter.TubersStartY = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadTop;
+            Global_Parameter.TubersEndX = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadRight;
+            Global_Parameter.TubersEndY = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadBottom;
+            for (int i = 0; i < 5; i++)
             {
-                //吸液
-                PipettingViewModel.Instance.Pipetting_Imbibition(0, (int)config.MagneticBeadCapacity);//磁珠
+                if (i == 0)
+                {
+                    //吸液
+                    PipettingViewModel.Instance.Imbibition(0);//磁珠
+                }
+                else
+                {
+                    PipettingViewModel.Instance.Pipetting_Imbibition(i);//磁珠
+                }
+
+                await Task.Delay(1000);
+                //移动Z轴
+                var brine1MoveZ = Global_Parameter.Brine1MaxZ;
+                //await PipettingViewModel.Instance.MoveZ(800);
                 // 吐液
-                PipettingViewModel.Instance.Pipetting_Injection(0, (int)config.MagneticBeadCapacity);//注液
+                PipettingViewModel.Instance.Pipetting_Injection(0);//注液
                 await Task.Delay(200);
             }
 

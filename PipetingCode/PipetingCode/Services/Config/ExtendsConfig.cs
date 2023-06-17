@@ -5,6 +5,25 @@
     /// </summary>
     public class ExtendsConfig
     {
+
+        
+        /// <summary>
+        /// 磁珠位置信息 左
+        /// </summary>
+        public int MagneticBeadLeft { get; set; }
+        /// <summary>
+        /// 磁珠位置信息 上
+        /// </summary>
+        public int MagneticBeadTop { get; set; }
+        /// <summary>
+        /// 磁珠位置信息 右
+        /// </summary>
+        public int MagneticBeadRight { get; set; }
+        /// <summary>
+        /// 磁珠位置信息 下
+        /// </summary>
+        public int MagneticBeadBottom { get; set; }
+
         /// <summary>
         /// 磁力架位置信息 左
         /// </summary>

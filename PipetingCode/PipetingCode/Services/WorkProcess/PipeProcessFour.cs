@@ -134,11 +134,11 @@ namespace PipettingCode.Services
                             if (execute != null)
                             {
                                 var res = await execute.ExecuteAsync(configInfo, config);
-                                if (res==false)
-                                {
-                                    _isRunning=false;
-                                    break;
-                                }
+                                //if (res==false)
+                                //{
+                                //    _isRunning=false;
+                                //    break;
+                                //}
                             }
 
                             string msg = $"执行步骤：{configInfo.Id}";

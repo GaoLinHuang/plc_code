@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace PipettingCode.Services
 {
-    internal class Step10 : IExecute
+    internal class Step10 : Step8
     {
-        public Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
-        {
-            Console.WriteLine("加入200ul乙醇，静置30S");
-            return Task.FromResult(true);
-        }
+        //public Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
+        //{
+        //    Console.WriteLine("加入200ul乙醇，静置30S");
+        //    return Task.FromResult(true);
+        //}
     }
 }

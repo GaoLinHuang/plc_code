@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using PipettingCode.Views;
+using PipettingCode.Common;
 
 namespace PipettingCode.Services
 {
@@ -40,16 +41,16 @@ namespace PipettingCode.Services
             return await Task.FromResult(true);
         }
 
-        private static void Operatort()
+        private void Operatort()
         {
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < GlobalConfig.OrificePlateErgodicCount; i++)
             {
                 // 磁力架吸取（吸干），到指定区域吐液 脱针
-                PipettingViewModel.Instance.TakeNeedle(i);
+                PipettingViewModel.Instance.SuckDry(i);
                 //吸液
                 Console.WriteLine("磁力架吸取（吸干），到指定区域吐液 脱针");
                 //吐液
-
+                PipettingViewModel.Instance.InjectionAndOffNeedle(i);//丢液
                 //脱针
                 PipettingViewModel.Instance.OffNeedle(i);
             }

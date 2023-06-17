@@ -22,5 +22,7 @@ namespace PipettingCode.Common
         /// 流程状态
         /// </summary>
         public IProcessStatus ProcessStatus => PipeProcess as IProcessStatus;
+
+
     }
 }

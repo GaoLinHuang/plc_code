@@ -35,7 +35,10 @@ namespace PipettingCode.Services.Config
         /// 样本混匀次数
         /// </summary>
         public int SampleBeadTimes { get; set; }
-        
+        /// <summary>
+        /// 洗脱剂混匀次数
+        /// </summary>
+        public int WashBeadTimes { get; set; }
         /// <summary>
         /// 乙醇量1
         /// </summary>

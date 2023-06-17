@@ -1,7 +1,9 @@
-﻿using PipettingControl;
+﻿using PipettingCode.Common;
+using PipettingControl;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Windows.Base;
@@ -103,28 +105,56 @@ namespace PipettingCode.Views
         {
             #region Z轴下降
 
-            mCommData.mWaittime = 500;
-            mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
-            mTCPUDP_Common.cmd_Returndistance(mCommData);
-            my_ZLeft = mCommData.mCurrentlocation[0];
-
-            my_ZLeft += StepValue;
-            mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
-            mCommData.mFC2 = 0X00;
-            mCommData.mSpeed = Global_Parameter.ZSlowSpeed[0];
-            mCommData.mACCSpeed = Global_Parameter.ZSlowAccSpeed[0];
-            mCommData.mDistance = my_ZLeft;
-            int result = mTCPUDP_Common.cmd_MotorControl(mCommData);
-            if (result == 0)
+            for (int i = 0; i < Global_Parameter.ZCMDID.Length; i++)
             {
-                Console.WriteLine(mCommData.mCurrentlocation[0]);
-            }
-            mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
-            mTCPUDP_Common.cmd_Returndistance(mCommData);
-            Console.WriteLine(mCommData.mCurrentlocation[0]);
-            string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
-            m_Msg = "实验平台-->加样臂调试-->Z轴下降,绝对位置:" + my_ZLeft + "," + m_Msg;
 
+
+                mCommData.mWaittime = 500;
+                //mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
+                mTCPUDP_Common.cmd_Returndistance(mCommData);
+                my_ZLeft = mCommData.mCurrentlocation[0];
+
+                my_ZLeft += StepValue;
+                //mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
+                mCommData.mFC2 = 0X00;
+                mCommData.mSpeed = Global_Parameter.ZSlowSpeed[i];
+                mCommData.mACCSpeed = Global_Parameter.ZSlowAccSpeed[i];
+                mCommData.mDistance = 800;
+                int result = mTCPUDP_Common.cmd_MotorControl(mCommData);
+                if (result == 0)
+                {
+                    Console.WriteLine(mCommData.mCurrentlocation[i]);
+                }
+                mCommData.mNode_ID = Global_Parameter.ZCMDID[i];
+                mTCPUDP_Common.cmd_Returndistance(mCommData);
+                Console.WriteLine(mCommData.mCurrentlocation[i]);
+                string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
+                m_Msg = "实验平台-->加样臂调试-->Z轴下降,绝对位置:" + my_ZLeft + "," + m_Msg;
+
+
+                //mCommData.mWaittime = 500;
+                ////mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
+                //mTCPUDP_Common.cmd_Returndistance(mCommData);
+                //my_ZLeft = mCommData.mCurrentlocation[0];
+
+                //my_ZLeft += StepValue;
+                ////mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
+                //mCommData.mFC2 = 0X00;
+                //mCommData.mSpeed = Global_Parameter.ZSlowSpeed[0];
+                //mCommData.mACCSpeed = Global_Parameter.ZSlowAccSpeed[0];
+                //mCommData.mDistance = my_ZLeft;
+                //int result = mTCPUDP_Common.cmd_MotorControl(mCommData);
+                //if (result == 0)
+                //{
+                //    Console.WriteLine(mCommData.mCurrentlocation[0]);
+                //}
+                //mCommData.mNode_ID = Global_Parameter.ZCMDID[0];
+                //mTCPUDP_Common.cmd_Returndistance(mCommData);
+                //Console.WriteLine(mCommData.mCurrentlocation[0]);
+                //string m_Msg = (result == 0) ? "操作成功！" : "操作失败!";
+                //m_Msg = "实验平台-->加样臂调试-->Z轴下降,绝对位置:" + my_ZLeft + "," + m_Msg;
+
+            }
             #endregion Z轴下降
         }
 
@@ -423,59 +453,76 @@ namespace PipettingCode.Views
             get => _z;
             set => SetField(ref _z, value);
         }
-
+        private Tcp_CommData CreateTcpCommData()
+        {
+            return new Tcp_CommData()
+            {
+                mIPAddress = Global_Parameter.IPAddress,// 1.加样臂网卡IP地址
+                mIPport = Global_Parameter.IPPort,// 2.加样臂网卡使用的端口
+                mSamplesize = PipettingParameter.TxtNumberOfStitches,//样本数量
+            };
+        }
         private void Check_Connect()
         {
             bool result = false;
             int m_Countnum = 0;
-            try
+            
+            Task.Run(() =>
             {
-                while (!result)
+                try
                 {
-                    Thread.Sleep(10);
-                    mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort,
-                        Global_Parameter.IPAddress, Global_Parameter.IPPort);
-                    //result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort);
-                    if (!result)
+                    Tcp_CommData commData = CreateTcpCommData();
+                    while (!result)
                     {
-                        m_Countnum++;
-                        if (m_Countnum >= 5)
+                        Thread.Sleep(10);
+                        var disConnect = mTCPUDP_Common.DisConnect();
+
+                        //Global_Parameter.SystemTcpIpFlag = false;
+                        result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort, commData.mBdIPAddress
+                               , commData.mBdIPport);
+                        //result = mTCPUDP_Common.client_Connect(Global_Parameter.IPAddress, Global_Parameter.IPPort);
+                        if (!result)
                         {
-                            LogUtils.SaveLog("Check_Connect 连接网络失败......", "TCPdata");
-                            //DialogResult dt = new DialogResult();
-                            //Run_circularProgressFlag = true;
-                            //this.Invoke((MethodInvoker)delegate
-                            //{
-                            //    dt = MessageBoxEX.Show("请检查线路连接是否正确,是否继续等待连接!", "连接失败提示", MessageBoxButtons.YesNo, new string[] { "等待", "关闭" });
-                            //});
-                            //if (dt == DialogResult.Yes)
-                            //{
-                            //    m_Countnum = 0;
-                            //    Run_circularProgressFlag = false;
-                            //}
-                            //else if (dt == DialogResult.No)
-                            //{
-                            //    Exit_circularProgressFlag = true;
-                            //    System.Environment.Exit(0);
-                            //}
+                            m_Countnum++;
+                            if (m_Countnum >= 5)
+                            {
+                                LogUtils.SaveLog("Check_Connect 连接网络失败......", "TCPdata");
+                                //DialogResult dt = new DialogResult();
+                                //Run_circularProgressFlag = true;
+                                //this.Invoke((MethodInvoker)delegate
+                                //{
+                                //    dt = MessageBoxEX.Show("请检查线路连接是否正确,是否继续等待连接!", "连接失败提示", MessageBoxButtons.YesNo, new string[] { "等待", "关闭" });
+                                //});
+                                //if (dt == DialogResult.Yes)
+                                //{
+                                //    m_Countnum = 0;
+                                //    Run_circularProgressFlag = false;
+                                //}
+                                //else if (dt == DialogResult.No)
+                                //{
+                                //    Exit_circularProgressFlag = true;
+                                //    System.Environment.Exit(0);
+                                //}
+                            }
+                        }
+                        else
+                        {
+                            break;
                         }
                     }
-                    else
-                    {
-                        break;
-                    }
+
+                    //Application.DoEvents();
+                    //this.Invoke(new Action(() =>
+                    //{
+                    LogUtils.SaveLog("Check_Connect 连接网络成功，进行血型仪初始化......", "TCPdata");
+                    //}));
+                    Init_Sys();
                 }
-                //Application.DoEvents();
-                //this.Invoke(new Action(() =>
-                //{
-                LogUtils.SaveLog("Check_Connect 连接网络成功，进行血型仪初始化......", "TCPdata");
-                //}));
-                Init_Sys();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Check_Connect errors:" + ex.Message);
-            }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Check_Connect errors:" + ex.Message);
+                }
+            });
         }
 
         #region 节点匹配初始化

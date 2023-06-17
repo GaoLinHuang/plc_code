@@ -8,6 +8,7 @@ using System.Threading;
 using System;
 using Windows.Base;
 using System.Windows;
+using System.Windows.Interop;
 
 namespace PipettingCode.Views
 {
@@ -15,6 +16,7 @@ namespace PipettingCode.Views
     {
         //private static object _locker = new object();
         private static TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();
+
         // 默认阈值
         private int Threshold = 100;
         private List<List<int>> Pressure = new();
@@ -22,6 +24,7 @@ namespace PipettingCode.Views
         private void DisplayMessage(string msg)
         {
             MySettingWindow.SaveLog(MySettingWindow.RunningLog, msg);
+            Console.WriteLine(msg);
         }
 
         private Tcp_CommData CreateTcpCommData()
@@ -46,7 +49,7 @@ namespace PipettingCode.Views
                 var mCommData = CreateTcpCommData();
                 mCommData.mMoveTargetX = x;
                 var result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);
-                return result > 0;
+                return result == 0;
             });
         }
         /// <summary>
@@ -61,7 +64,28 @@ namespace PipettingCode.Views
                 var mCommData = CreateTcpCommData();
                 mCommData.mMoveTargetY = y;             // 5.Y轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
                 var result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_Y_AxisPosition(mCommData);                    //X轴移到取针位置坐标
-                return result > 0;
+                return result == 0;
+            });
+        }
+
+        public Task<bool> MoveZ(int z)
+        {
+            return Task.Run(() =>
+            {
+                foreach (var zId in Global_Parameter.ZCMDID)
+                {
+                    var mCommData = CreateTcpCommData();
+                    mCommData.mWaittime = 500;
+                    mTCPUDP_Common.cmd_Returndistance(mCommData);
+                    //my_ZLeft = mCommData.mCurrentlocation[0];
+                    mCommData.mNode_ID = zId;
+                    mCommData.mFC2 = 0X00;
+                    mCommData.mSpeed = Global_Parameter.ZSlowSpeed[0];
+                    mCommData.mACCSpeed = Global_Parameter.ZSlowAccSpeed[0];
+                    mCommData.mDistance = z;
+                    int result = mTCPUDP_Common.cmd_MotorControl(mCommData);
+                }
+                return true;
             });
         }
 
@@ -256,9 +280,21 @@ namespace PipettingCode.Views
                 else
                 {
                     DisplayMessage("取针移动X轴失败");
-                    if (result != -1)
+                    //if (result != -1)
+                    //{
+                    //    result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);                    //X轴移到取针位置坐标
+                    //}
+                    int tryCount = 0;
+                    while ((tryCount++) < 5)
                     {
-                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);                    //X轴移到取针位置坐标
+                        Thread.Sleep(2000);
+                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_X_AxisPosition(mCommData);
+                        if (result == 0)
+                        {
+                            DisplayMessage("取针移动X轴成功");
+                            return result;
+                        }
+                        DisplayMessage("取针移动X轴失败");
                     }
                 }
             }
@@ -289,10 +325,22 @@ namespace PipettingCode.Views
                 else
                 {
                     DisplayMessage("取针移动到Y轴失败");
-                    if (result != -1)
+                    int tryCount = 0;
+                    while ((tryCount++) < 5)
                     {
-                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_Y_AxisPosition(mCommData);                    //X轴移到取针位置坐标
+                        Thread.Sleep(2000);
+                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_Y_AxisPosition(mCommData);
+                        if (result == 0)
+                        {
+                            DisplayMessage("取针移动到Y轴成功");
+                            return result;
+                        }
+                        DisplayMessage("取针移动到Y轴失败");
                     }
+                    //if (result != -1)
+                    //{
+                    //    result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTakeNeedle_Y_AxisPosition(mCommData);                    //X轴移到取针位置坐标
+                    //}
                 }
 
             }
@@ -394,7 +442,7 @@ namespace PipettingCode.Views
                         {
                             return -2;
                         }
-                        DisplayMessage("吸液失败..");
+                        DisplayMessage("取针失败..");
 
                         result = mTCPUDP_Common.cmd_TakeNeedle(mCommData);                      // 取针
 
@@ -474,6 +522,7 @@ namespace PipettingCode.Views
         #endregion
 
         #region 2.4 取针
+
         public int TakeNeedle(int count)
         {
             Task<int> task1 = Task.Run(() =>
@@ -513,10 +562,19 @@ namespace PipettingCode.Views
                 }
                 else
                 {
-                    DisplayMessage("吸液移动X轴成功失败");
-                    if (result != -1)
+                    DisplayMessage("吸液移动X轴失败");
+                    int tryCount = 0;
+                    while ((tryCount++)<5)
                     {
+                        Thread.Sleep(2000);
+                        DisplayMessage("尝试吸液移动X");
                         result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTuber(mCommData);                        //X轴移动开始合拢位置
+                        if (result==0)
+                        {
+                            DisplayMessage("吸液移动X轴成功");
+                            return result;
+                        }
+                        DisplayMessage("吸液移动X轴失败");
                     }
                 }
             }
@@ -576,7 +634,7 @@ namespace PipettingCode.Views
             Tcp_CommData mCommData = CreateTcpCommData();
             try
             {
-                DisplayMessage("正在进行取针..");
+                DisplayMessage("正在进行Y轴张开..");
 
 
                 result = mTCPUDP_Common.cmd_OpenYaxis(mCommData);                          // 8针操作
@@ -590,6 +648,20 @@ namespace PipettingCode.Views
                     if (result != -1)
                     {
                         result = mTCPUDP_Common.cmd_OpenYaxis(mCommData);                   // 再试一次
+                    }
+
+                    int tryCount = 0;
+                    while ((tryCount++) < 5)
+                    {
+                        Thread.Sleep(2000);
+                        DisplayMessage("尝试Y轴张开");
+                        result = mTCPUDP_Common.cmd_OpenYaxis(mCommData);                        //X轴移动开始合拢位置
+                        if (result == 0)
+                        {
+                            DisplayMessage("Y轴张开成功!");
+                            return result;
+                        }
+                        DisplayMessage("Y轴张开失败!");
                     }
                 }
             }
@@ -723,33 +795,33 @@ namespace PipettingCode.Views
 
                 result = mTCPUDP_Common.cmd_Imbibition_All(mCommData, mParameter);                      //多通道同时吸液
 
-                task.Wait();
-                HashSet<int> HasLiquild = new();          // 那根针吸到液体了
+                //task.Wait();
+                //HashSet<int> HasLiquild = new();          // 那根针吸到液体了
 
-                int[] diff = GetMaxDiff(count);
+                //int[] diff = GetMaxDiff(count);
 
                 string msg = "";
-                // 大于阈值，就是吸上液了
-                for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
-                {
-                    // 差值不满足要求
-                    if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i])
-                    {
-                        int index = (count / 2 * 2) * 4 + count % 2 + (i % 4) * 2;
-                        if (CheckViewModel.GetInstance().SelectedItems.Contains(index))
-                        {
-                            HasLiquild.Add(i);             // 质控默认吸液成功
-                            continue;
-                        }
-                        SampleViewModel.GetInstance().Sample96[index].Error = true;
-                        msg += "第" + (i + 1).ToString() + "根针、";
-                        result = -2;
-                    }
-                    else
-                    {
-                        HasLiquild.Add(i);
-                    }
-                }
+                //// 大于阈值，就是吸上液了
+                //for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
+                //{
+                //    // 差值不满足要求
+                //    if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i])
+                //    {
+                //        int index = (count / 2 * 2) * 4 + count % 2 + (i % 4) * 2;
+                //        if (CheckViewModel.GetInstance().SelectedItems.Contains(index))
+                //        {
+                //            HasLiquild.Add(i);             // 质控默认吸液成功
+                //            continue;
+                //        }
+                //        SampleViewModel.GetInstance().Sample96[index].Error = true;
+                //        msg += "第" + (i + 1).ToString() + "根针、";
+                //        result = -2;
+                //    }
+                //    else
+                //    {
+                //        HasLiquild.Add(i);
+                //    }
+                //}
 
                 if (result == 0)
                 {
@@ -807,13 +879,13 @@ namespace PipettingCode.Views
                         mCommData.mEnableFlag[2] = 0;          // 3针
                         mCommData.mEnableFlag[3] = 0;          // 4针
 
-                        for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
-                        {
-                            if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i] && !HasLiquild.Contains(i))
-                            {
-                                mCommData.mEnableFlag[i] = 1;
-                            }
-                        }
+                        //for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
+                        //{
+                        //    if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i] && !HasLiquild.Contains(i))
+                        //    {
+                        //        mCommData.mEnableFlag[i] = 1;
+                        //    }
+                        //}
 
                         #region 检测是否吸到液
                         task = Task.Run(() =>
@@ -824,26 +896,26 @@ namespace PipettingCode.Views
                         result = mTCPUDP_Common.cmd_Imbibition_All(mCommData, mParameter);                      //多通道同时吸液
                         task.Wait();       // 等待获取气压数据完成
 
-                        diff = GetMaxDiff(count);
+                        //diff = GetMaxDiff(count);
 
-                        msg = "";
-                        // 大于阈值，就是吸上液了
-                        for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
-                        {
-                            if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i] && !HasLiquild.Contains(i))
-                            {
-                                result = -2;
-                                msg += "第" + (i + 1).ToString() + "根针、";
-                            }
-                            else
-                            {
-                                HasLiquild.Add(i);
-                            }
-                            if (msg.Length >= 20)
-                            {
-                                msg += "\n";
-                            }
-                        }
+                        //msg = "";
+                        //// 大于阈值，就是吸上液了
+                        //for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
+                        //{
+                        //    if (Math.Abs(diff[i]) < this.Threshold + PipettingParameter.ThresholdPress[i] && !HasLiquild.Contains(i))
+                        //    {
+                        //        result = -2;
+                        //        msg += "第" + (i + 1).ToString() + "根针、";
+                        //    }
+                        //    else
+                        //    {
+                        //        HasLiquild.Add(i);
+                        //    }
+                        //    if (msg.Length >= 20)
+                        //    {
+                        //        msg += "\n";
+                        //    }
+                        //}
                         #endregion
 
                         retry = result != 0 && result != -1;
@@ -1131,6 +1203,25 @@ namespace PipettingCode.Views
         #endregion
 
         #region 3.4 吸液
+        public Task<int> ImbibitionAsync(int count)
+        {
+            return Task.Run(async () =>
+               {
+                   int res = Imbibition_MoveX(count);
+                   if (res != 0)
+                   {
+                       return res;
+                   }
+                   await Task.Delay(2000);
+                   res = Imbibition_MoveY(count);
+                   if (res != 0)
+                   {
+                       return res;
+                   }
+                   await Task.Delay(2000);
+                   return Pipetting_Imbibition(count);
+               });
+        }
         public int Imbibition(int count)
         {
             Task<int> task1, task2;
@@ -1368,6 +1459,11 @@ namespace PipettingCode.Views
                     }
                 }
 
+                for (int i = 4; i < 8; i++)
+                {
+                    mCommData.mEnableFlag[i] = 0;
+                }
+
                 result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //多通道同时注液
                 if (result == 0)
                 {
@@ -1497,6 +1593,329 @@ namespace PipettingCode.Views
 
         #endregion
 
+        #region 吸干
+
+        #region 4.1 吸干移动X轴
+        private int SuckDryMoveX(int count)
+        {
+            Tcp_CommData mCommData = CreateTcpCommData();
+            int result = -1;
+            try
+            {
+                //TODO：TT  96
+                //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
+                //{
+                int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                //}
+                //else
+                //{
+                //    int index = count / 4;
+                //    int InjectionXInternal = (Global_Parameter.SampleEndX[index] - Global_Parameter.SampleStartX[index]) / 11;      // 注液X间距
+                //    mCommData.mMoveTargetX = Global_Parameter.SampleStartX[index] + ((count % 4) / 2) * 6 * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                //}
+
+
+                result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_X_AxisPosition(mCommData);     // 移动X到加样位置
+
+                if (result == 0)
+                {
+                    DisplayMessage("吸干移动X轴成功");
+                }
+                else
+                {
+                    DisplayMessage("吸干移动X轴失败");
+                    if (result != -1)
+                    {
+                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_X_AxisPosition(mCommData);     // 移动X到加样位置
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.1.1 吸干移动X轴，体系构建
+        private int SuckDryMoveXBuild(int count)
+        {
+            Tcp_CommData mCommData = CreateTcpCommData();
+            int result = -1;
+            try
+            {
+                mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;
+
+                int InjectionXInternal = (Global_Parameter.SystemInjectionEndX - Global_Parameter.SystemInjectionStartX) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SystemInjectionStartX + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+
+                result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_X_AxisPosition(mCommData);     // 移动X到加样位置
+
+                if (result == 0)
+                {
+                    DisplayMessage("吸干移动X轴成功");
+                }
+                else
+                {
+                    DisplayMessage("吸干移动X轴失败");
+                    if (result != -1)
+                    {
+                        result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_X_AxisPosition(mCommData);     // 移动X到加样位置
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.2 吸干移动Y轴
+        private int SuckDryMoveY(int count)
+        {
+            Tcp_CommData mCommData = CreateTcpCommData();
+            int result = -1;
+            try
+            {
+                //TODO：TT  96
+                //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
+                //{
+                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+                //}
+                //else
+                //{
+                //    int index = count / 4;
+                //    int InjectionYInternal = (Global_Parameter.SampleEndY[index] - Global_Parameter.SampleStartY[index]) / 7;       // 注液Y间距
+                //    mCommData.mMoveTargetY = Global_Parameter.SampleStartY[index] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+                //}
+
+                result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_Y_AxisClosure(mCommData);
+                if (result != 0)
+                {
+                    result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_Y_AxisClosure(mCommData);
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.2.1 注液移动Y轴，体系构建
+        private int SuckDryMoveYBuild(int count)
+        {
+            Tcp_CommData mCommData = CreateTcpCommData();
+            int result = -1;
+            try
+            {
+                int InjectionYInternal = (Global_Parameter.SystemInjectionEndY - Global_Parameter.SystemInjectionStartY) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SystemInjectionStartY + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+
+                result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_Y_AxisClosure(mCommData);
+                if (result != 0)
+                {
+                    result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToSample_Y_AxisClosure(mCommData);
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.3 多通道同时吸干
+        public int SuckDryInjection(int count, int? mInjectionPumpSpace = null)
+        {
+            int result = -1;
+            Tcp_CommData mCommData = CreateTcpCommData();
+            Class_ImbibitionParameter mParameter = new Class_ImbibitionParameter();
+            try
+            {
+                DisplayMessage("吸干开始..");
+                //int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
+                //int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
+
+                //TODO：TT  96
+                //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
+                //{
+                int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+
+                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;
+                //}
+                //else
+                //{
+                //    int index = count / 4;
+                //    int InjectionXInternal = (Global_Parameter.SampleEndX[index] - Global_Parameter.SampleStartX[index]) / 11;      // 注液X间距
+                //    mCommData.mMoveTargetX = Global_Parameter.SampleStartX[index] + ((count % 4) / 2) * 6 * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                //    int InjectionYInternal = (Global_Parameter.SampleEndY[index] - Global_Parameter.SampleStartY[index]) / 7;       // 注液Y间距
+                //    mCommData.mMoveTargetY = Global_Parameter.SampleStartY[index] + (count % 2) * InjectionYInternal;
+                //}          //5.样本数量; 
+                mParameter.mSamplesize = PipettingParameter.TxtNumberOfStitches;          //6.样本数量; 
+                mParameter.mTipGap = PipettingParameter.TxtTipClearance;              //7.30针尖空气间隙(μl):
+                mParameter.mNeedleTailGap = PipettingParameter.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
+                mParameter.mInjectionPumpSpace = mInjectionPumpSpace ?? PipettingParameter.MInjectionPumpSpace;          //9.注液量
+                mParameter.mInjectionPumpSpeed = PipettingParameter.MInjectionPumpSpeed;          //10.注液速度
+                mParameter.mInjectionPumpAccSpeed = PipettingParameter.MInjectionPumpAccSpeed;       //11.注液加速度(μl/s^2):
+                mParameter.mInjectionHeight = PipettingParameter.MInjectionHeight;             //12.注液高度(步):
+                mParameter.mInjectionZSpace = PipettingParameter.MInjectionZSpace;             //13.注液完Z轴提起的高度(步):
+                mParameter.m_Liquidinjectiontimes = PipettingParameter.TextBox5;                     //14.注液次数
+
+
+
+                for (int i = 0; i < PipettingParameter.TxtNumberOfStitches; ++i)
+                {
+                    int index = (count / 2 * 2) * 4 + count % 2 + (i % 4) * 2;
+                    if (CheckViewModel.GetInstance().SelectedItems.Contains(index))
+                    {
+                        mCommData.mEnableFlag[i] = 0;
+                    }
+                }
+
+                for (int i = 4; i < 8; i++)
+                {
+                    mCommData.mEnableFlag[i] = 0;
+                }
+
+                result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //多通道同时注液
+                if (result == 0)
+                {
+                    DisplayMessage("注液成功..");
+                }
+                else
+                {
+                    DisplayMessage("注液失败..");
+                    if (result != -1)
+                    {
+                        result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液    
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.3.1 吸干，体系构建
+        public int SuckDryBuild(int count)
+        {
+            int result = -1;
+            Tcp_CommData mCommData = CreateTcpCommData();
+            Class_ImbibitionParameter mParameter = new Class_ImbibitionParameter();
+            try
+            {
+                DisplayMessage("注液开始..");
+                int InjectionXInternal = (Global_Parameter.SystemInjectionEndX - Global_Parameter.SystemInjectionStartX) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SystemInjectionStartX + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动
+                                                                                                                                // 态传递的，根据实际实验取针位置计算，然后赋值
+                int InjectionYInternal = (Global_Parameter.SystemInjectionEndY - Global_Parameter.SystemInjectionStartY) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SystemInjectionStartY + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+
+
+                mCommData.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //5.样本数量; 
+                mParameter.mSamplesize = PipettingParameterBuild.TxtNumberOfStitches;          //6.样本数量; 
+                mParameter.mTipGap = PipettingParameterBuild.TxtTipClearance;              //7.30针尖空气间隙(μl):
+                mParameter.mNeedleTailGap = PipettingParameterBuild.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
+                mParameter.mInjectionPumpSpace = PipettingParameterBuild.MInjectionPumpSpace;          //9.注液量
+                mParameter.mInjectionPumpSpeed = PipettingParameterBuild.MInjectionPumpSpeed;          //10.注液速度
+                mParameter.mInjectionPumpAccSpeed = PipettingParameterBuild.MInjectionPumpAccSpeed;       //11.注液加速度(μl/s^2):
+                mParameter.mInjectionHeight = PipettingParameterBuild.MInjectionHeight;             //12.注液高度(步):
+                mParameter.mInjectionZSpace = PipettingParameterBuild.MInjectionZSpace;             //13.注液完Z轴提起的高度(步):
+                mParameter.m_Liquidinjectiontimes = PipettingParameterBuild.TextBox5;                     //14.注液次数
+
+
+
+                for (int i = 0; i < PipettingParameterBuild.TxtNumberOfStitches; ++i)
+                {
+                    int index = (count / 2 * 2) * 4 + count % 2 + (i % 4) * 2;
+                    if (CheckViewModel.GetInstance().SelectedItems.Contains(index))
+                    {
+                        mCommData.mEnableFlag[i] = 0;
+                    }
+                }
+
+                result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //多通道同时注液
+                if (result == 0)
+                {
+                    DisplayMessage("注液成功..");
+                }
+                else
+                {
+                    DisplayMessage("注液失败..");
+                    if (result != -1)
+                    {
+                        result = mTCPUDP_Common.cmd_Injection_All(mCommData, mParameter);                       //再来一次多通道同时注液    
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MySettingWindow.SaveLog(MySettingWindow.ErrorLog, ex.StackTrace + "\n" + ex.ToString());     // 保存错误日志
+            }
+            return result;
+        }
+        #endregion
+
+        #region 4.4 吸干
+        public int SuckDry(int count)
+        {
+            Task<int> task1, task2;
+            if (MainWindowViewModel.GetInstance().TabIndex == 0)
+            {
+                task1 = Task.Run(() =>
+                {
+                    return SuckDryMoveX(count);
+                });
+                task2 = Task.Run(() =>
+                {
+                    return SuckDryMoveY(count);
+                });
+            }
+            else
+            {
+                task1 = Task.Run(() =>
+                {
+                    return SuckDryMoveXBuild(count);
+                });
+                task2 = Task.Run(() =>
+                {
+                    return SuckDryMoveYBuild(count);
+                });
+            }
+
+            Task.WaitAll(task1, task2);        // 两个动作完成后，才能继续下一个动作
+
+            if (task1.Result == 0 && task2.Result == 0)
+            {
+                if (MainWindowViewModel.GetInstance().TabIndex == 0)
+                {
+                    return Pipetting_Imbibition(count);
+                }
+                //else
+                //{
+                //    return Pipetting_InjectionBuild(count);
+                //}
+            }
+
+            return -1;
+        }
+        #endregion
+
+        #endregion
+
         #region 5 脱针
 
         #region 5.1 脱针移动X轴
@@ -1514,10 +1933,19 @@ namespace PipettingCode.Views
                 else
                 {
                     DisplayMessage("脱针移动X轴失败");
-                    if (result != -1)
+
+                    int tryCount = 0;
+                    while ((tryCount++)<5 )
                     {
                         result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToNeedleRemoval_X_AxisPosition(mCommData);                    //X轴移到脱针位置坐标
+                        if (result==0)
+                        {
+                            DisplayMessage("脱针移动X轴成功");
+                            return result;
+                        }
+                        DisplayMessage("脱针移动X轴失败");
                     }
+                    
                 }
             }
             catch (Exception ex)
@@ -1575,7 +2003,7 @@ namespace PipettingCode.Views
                 else
                 {
                     DisplayMessage("脱针失败");
-                    if (result != -1)
+                    if (result == -1)
                     {
                         // 脱针失败，再次脱针
                         result = mTCPUDP_Common.cmd_NeedleRemoval(mCommData);
@@ -1601,8 +2029,14 @@ namespace PipettingCode.Views
         #region 5.4 脱针
         public int OffNeedle(int count)
         {
-            Task<int> task1 = Task.Run(() => OffNeedle_MoveX(count));
-            Task<int> task2 = Task.Run(() => OffNeedle_MoveY(count));
+            Task<int> task1 = Task.Run(() =>
+            {
+                return OffNeedle_MoveX(count);
+            });
+            Task<int> task2 = Task.Run(() =>
+            {
+                return OffNeedle_MoveY(count);
+            });
 
             Task.WaitAll(task1, task2);           // 两个动作完成后，才能继续下一个动作
 
@@ -1613,6 +2047,46 @@ namespace PipettingCode.Views
             }
             return -1;
         }
+
+        public int InjectionAndOffNeedle(int count )
+        {
+            Task<int> task1 = Task.Run(() =>
+            {
+                return OffNeedle_MoveX(count);
+            });
+            Task<int> task2 = Task.Run(() =>
+            {
+                return OffNeedle_MoveY(count);
+            });
+
+
+            Task.WaitAll(task1, task2);           // 两个动作完成后，才能继续下一个动作
+
+            if (task1.Result == 0 && task2.Result == 0)
+            {
+                Pipetting_Injection(count);
+                return Pipetting_OffNeedle(count);
+
+            }
+            return -1;
+        }
+        //public async Task<int> OffNeedleAsync(int count)
+        //{
+
+        //    int res = OffNeedle_MoveX(count);
+        //    await Task.Delay(1000);
+        //    if (res == -1)
+        //    {
+        //        return res;
+        //    }
+        //    res = OffNeedle_MoveY(count);
+        //    if (res == -1)
+        //    {
+        //        return res;
+        //    }
+        //    await Task.Delay(1000);
+        //    return Pipetting_OffNeedle(count);
+        //}
         #endregion
 
         #endregion

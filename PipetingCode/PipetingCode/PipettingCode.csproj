@@ -67,6 +67,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\GlobalConfig.cs" />
     <Compile Include="Common\MainSingletonService.cs" />
     <Compile Include="Common\MySettingWindow.cs" />
     <Compile Include="Common\PipettingParameter.cs" />
@@ -103,6 +104,7 @@
     <Compile Include="Services\WorkProcess\PipeProcessFour.cs" />
     <Compile Include="Services\Config\ProcessConfigService.cs" />
     <Compile Include="TestB.cs" />
+    <Compile Include="Utils\IniUtil.cs" />
     <Compile Include="ViewModel\CommunicationStateViewModel.cs" />
     <Compile Include="ViewModel\PLCViewModel.cs" />
     <Compile Include="ViewModel\SampleViewModel.cs" />

@@ -101,8 +101,33 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
+                        <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
+
                     <StackPanel Margin="5">
+                        <TextBlock Text="磁珠试剂位置"/>
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="左上角位置X:"/>
+                                <TextBox Text="{Binding ExtendsConfig.MagneticBeadLeft}" Width="100"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="左上角位置Y:"/>
+                                <TextBox Text="{Binding ExtendsConfig.MagneticBeadTop}" Width="100"></TextBox>
+                            </StackPanel>
+
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="右下角位置X:"/>
+                                <TextBox Text="{Binding ExtendsConfig.MagneticBeadRight}" Width="100"></TextBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="右下角位置Y:"/>
+                                <TextBox Text="{Binding ExtendsConfig.MagneticBeadBottom}" Width="100"></TextBox>
+                            </StackPanel>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1" Margin="5">
                         <TextBlock Text="乙醇试剂位置"/>
                         <StackPanel Orientation="Vertical" Margin="5">
                             <StackPanel Orientation="Horizontal">
@@ -125,7 +150,7 @@
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel Grid.Column="1"  Margin="5">
+                    <StackPanel Grid.Column="2"  Margin="5">
                         <TextBlock Text="洗脱液位置"  Margin="5"/>
                         <StackPanel Orientation="Vertical"  Margin="5">
                             <StackPanel Orientation="Horizontal">
@@ -175,7 +200,6 @@
                                 <TextBox Text="{Binding SelectItem.SampleBeadTimes}" Width="100"></TextBox>
                                 <TextBlock Text="次"></TextBlock>
                             </StackPanel>
-
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="第一次乙醇量:"/>
                                 <TextBox Text="{Binding SelectItem.EthanolCapacityFirst}" Width="100"></TextBox>
@@ -197,6 +221,12 @@
                                 <TextBox Text="{Binding SelectItem.WashCapacitySecond}" Width="100"></TextBox>
                                 <TextBlock Text="ul"></TextBlock>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="洗脱剂混匀次数:"/>
+                                <TextBox Text="{Binding SelectItem.WashBeadTimes}" Width="100"></TextBox>
+                                <TextBlock Text="次"></TextBlock>
+                            </StackPanel>
+                            
                         </StackPanel>
 
                     </StackPanel>
