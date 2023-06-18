@@ -15,10 +15,10 @@ namespace PipettingCode.Services
     {
         public  async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
-            Console.WriteLine("吸取27ul的洗脱液到新的96孔板中");
+            Console.WriteLine($"步骤20：吸取{config.WashCapacitySecond}ul的洗脱液到新的96孔板中");
             var res = await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
+                return MessageBox.Show($"步骤20：吸取{config.WashCapacitySecond}ul的洗脱液到新的96孔板中", "换针提示", MessageBoxButton.OKCancel);
 
             });
 
@@ -38,19 +38,9 @@ namespace PipettingCode.Services
                 PipettingViewModel.Instance.TakeNeedle(i);
 
                 //吸液
-                PipettingViewModel.Instance.Imbibition(i);
+                PipettingViewModel.Instance.Imbibition(i,(int)config.WashCapacitySecond);
                 // 吐液
-                PipettingViewModel.Instance.Injection(i);
-
-                ////步骤16
-                //for (int j = 0; j < config.SampleBeadTimes; j++)
-                //{
-                //    //吸液
-                //    PipettingViewModel.Instance.Pipetting_Imbibition(i);
-                //    // 吐液
-                //    PipettingViewModel.Instance.Pipetting_Initial(i);
-                //}
-                //脱针
+                PipettingViewModel.Instance.Injection(i,1);//磁力板位置设置成1
                 PipettingViewModel.Instance.OffNeedle(0);
             }
 

@@ -15,7 +15,7 @@ namespace PipettingCode.Services
             Console.WriteLine("将样本转移到磁力板上");
             return await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var messageBoxResult = MessageBox.Show("将样本转移到磁力板上", "确认", MessageBoxButton.OKCancel);
+                var messageBoxResult = MessageBox.Show("步骤5：将样本转移到磁力板上", "确认", MessageBoxButton.OKCancel);
                 return messageBoxResult == MessageBoxResult.OK;
             });
         }

@@ -564,12 +564,12 @@ namespace PipettingCode.Views
                 {
                     DisplayMessage("吸液移动X轴失败");
                     int tryCount = 0;
-                    while ((tryCount++)<5)
+                    while ((tryCount++) < 5)
                     {
                         Thread.Sleep(2000);
                         DisplayMessage("尝试吸液移动X");
                         result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToTuber(mCommData);                        //X轴移动开始合拢位置
-                        if (result==0)
+                        if (result == 0)
                         {
                             DisplayMessage("吸液移动X轴成功");
                             return result;
@@ -739,7 +739,7 @@ namespace PipettingCode.Views
                 mParameter.mSamplesize = PipettingParameter.TxtNumberOfStitches;          //5.样本数量; 
 
                 // 如果没有设置，取吸液界面设置的参数
-                mParameter.mSuctionHeight = 1000;
+                mParameter.mSuctionHeight = Global_Parameter.TubersMaxZ;
                 // 10混 TODO：TT 多少混
                 //if (ShiGuanViewModel.GetInstance().SelectedType == "10混" || ShiGuanViewModel.GetInstance().SelectedType == "单混")
                 //{
@@ -1203,26 +1203,13 @@ namespace PipettingCode.Views
         #endregion
 
         #region 3.4 吸液
-        public Task<int> ImbibitionAsync(int count)
-        {
-            return Task.Run(async () =>
-               {
-                   int res = Imbibition_MoveX(count);
-                   if (res != 0)
-                   {
-                       return res;
-                   }
-                   await Task.Delay(2000);
-                   res = Imbibition_MoveY(count);
-                   if (res != 0)
-                   {
-                       return res;
-                   }
-                   await Task.Delay(2000);
-                   return Pipetting_Imbibition(count);
-               });
-        }
-        public int Imbibition(int count)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="count">步骤数</param>
+        /// <param name="mLiquidabsorption">吸液量</param>
+        /// <returns></returns>
+        public int Imbibition(int count, int? mLiquidabsorption = null)
         {
             Task<int> task1, task2;
             if (MainWindowViewModel.GetInstance().TabIndex == 0)
@@ -1256,7 +1243,7 @@ namespace PipettingCode.Views
             {
                 if (MainWindowViewModel.GetInstance().TabIndex == 0)
                 {
-                    return Pipetting_Imbibition(count);
+                    return Pipetting_Imbibition(count, mLiquidabsorption);
                 }
                 else
                 {
@@ -1273,7 +1260,7 @@ namespace PipettingCode.Views
         #region 4 注液
 
         #region 4.1 注液移动X轴
-        private int Injection_MoveX(int count)
+        private int Injection_MoveX(int count, int sampleIndex = 0)
         {
             Tcp_CommData mCommData = CreateTcpCommData();
             int result = -1;
@@ -1282,8 +1269,8 @@ namespace PipettingCode.Views
                 //TODO：TT  96
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
-                int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
-                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                int InjectionXInternal = (Global_Parameter.SampleEndX[sampleIndex] - Global_Parameter.SampleStartX[sampleIndex]) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[sampleIndex] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
                 //}
                 //else
                 //{
@@ -1352,7 +1339,7 @@ namespace PipettingCode.Views
         #endregion
 
         #region 4.2 注液移动Y轴
-        private int Injection_MoveY(int count)
+        private int Injection_MoveY(int count, int sampleIndex = 0)
         {
             Tcp_CommData mCommData = CreateTcpCommData();
             int result = -1;
@@ -1361,8 +1348,8 @@ namespace PipettingCode.Views
                 //TODO：TT  96
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
-                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
-                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+                int InjectionYInternal = (Global_Parameter.SampleEndY[sampleIndex] - Global_Parameter.SampleStartY[sampleIndex]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[sampleIndex] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
                 //}
                 //else
                 //{
@@ -1410,7 +1397,7 @@ namespace PipettingCode.Views
         #endregion
 
         #region 4.3 多通道同时注液
-        public int Pipetting_Injection(int count, int? mInjectionPumpSpace = null)
+        public int Pipetting_Injection(int count, int sampleIndex = 0, int? mInjectionPumpSpace = null)
         {
             int result = -1;
             Tcp_CommData mCommData = CreateTcpCommData();
@@ -1424,11 +1411,11 @@ namespace PipettingCode.Views
                 //TODO：TT  96
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
-                int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
-                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                int InjectionXInternal = (Global_Parameter.SampleEndX[sampleIndex] - Global_Parameter.SampleStartX[sampleIndex]) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[sampleIndex] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
 
-                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
-                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;
+                int InjectionYInternal = (Global_Parameter.SampleEndY[sampleIndex] - Global_Parameter.SampleStartY[sampleIndex]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[sampleIndex] + (count % 2) * InjectionYInternal;
                 //}
                 //else
                 //{
@@ -1438,6 +1425,7 @@ namespace PipettingCode.Views
                 //    int InjectionYInternal = (Global_Parameter.SampleEndY[index] - Global_Parameter.SampleStartY[index]) / 7;       // 注液Y间距
                 //    mCommData.mMoveTargetY = Global_Parameter.SampleStartY[index] + (count % 2) * InjectionYInternal;
                 //}          //5.样本数量; 
+                mParameter.mSuctionHeight = Global_Parameter.TubersMaxZ;
                 mParameter.mSamplesize = PipettingParameter.TxtNumberOfStitches;          //6.样本数量; 
                 mParameter.mTipGap = PipettingParameter.TxtTipClearance;              //7.30针尖空气间隙(μl):
                 mParameter.mNeedleTailGap = PipettingParameter.TxtNeedleTailGap;             //8.50//针尾空气间隙(μl)
@@ -1445,6 +1433,7 @@ namespace PipettingCode.Views
                 mParameter.mInjectionPumpSpeed = PipettingParameter.MInjectionPumpSpeed;          //10.注液速度
                 mParameter.mInjectionPumpAccSpeed = PipettingParameter.MInjectionPumpAccSpeed;       //11.注液加速度(μl/s^2):
                 mParameter.mInjectionHeight = PipettingParameter.MInjectionHeight;             //12.注液高度(步):
+                mParameter.mInjectionHeight = Global_Parameter.TubersMaxZ; ;             //12.注液高度(步):
                 mParameter.mInjectionZSpace = PipettingParameter.MInjectionZSpace;             //13.注液完Z轴提起的高度(步):
                 mParameter.m_Liquidinjectiontimes = PipettingParameter.TextBox5;                     //14.注液次数
 
@@ -1547,18 +1536,18 @@ namespace PipettingCode.Views
         #endregion
 
         #region 4.4 注液
-        public int Injection(int count)
+        public int Injection(int count, int sampleIndex = 0)
         {
             Task<int> task1, task2;
             if (MainWindowViewModel.GetInstance().TabIndex == 0)
             {
                 task1 = Task.Run(() =>
                 {
-                    return Injection_MoveX(count);
+                    return Injection_MoveX(count, sampleIndex);
                 });
                 task2 = Task.Run(() =>
                 {
-                    return Injection_MoveY(count);
+                    return Injection_MoveY(count, sampleIndex);
                 });
             }
             else
@@ -1579,7 +1568,7 @@ namespace PipettingCode.Views
             {
                 if (MainWindowViewModel.GetInstance().TabIndex == 0)
                 {
-                    return Pipetting_Injection(count);
+                    return Pipetting_Injection(count, sampleIndex);
                 }
                 else
                 {
@@ -1605,8 +1594,8 @@ namespace PipettingCode.Views
                 //TODO：TT  96
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
-                int InjectionXInternal = (Global_Parameter.SampleEndX[0] - Global_Parameter.SampleStartX[0]) / 11;      // 注液X间距
-                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[0] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
+                int InjectionXInternal = (Global_Parameter.SampleEndX[1] - Global_Parameter.SampleStartX[1]) / 11;      // 注液X间距
+                mCommData.mMoveTargetX = Global_Parameter.SampleStartX[1] + (count / 2) * InjectionXInternal;             // 4.X轴坐标是动态传递的，根据实际实验取针位置计算，然后赋值
                 //}
                 //else
                 //{
@@ -1684,8 +1673,8 @@ namespace PipettingCode.Views
                 //TODO：TT  96
                 //if (ShiJiViewModel.GetInstance().SelectedNumbers.StartsWith("96"))
                 //{
-                int InjectionYInternal = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;       // 注液Y间距
-                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[0] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
+                int InjectionYInternal = (Global_Parameter.SampleEndY[1] - Global_Parameter.SampleStartY[1]) / 7;       // 注液Y间距
+                mCommData.mMoveTargetY = Global_Parameter.SampleStartY[1] + (count % 2) * InjectionYInternal;               //4.Y轴坐标，动1态传递
                 //}
                 //else
                 //{
@@ -1902,7 +1891,7 @@ namespace PipettingCode.Views
             {
                 if (MainWindowViewModel.GetInstance().TabIndex == 0)
                 {
-                    return Pipetting_Imbibition(count);
+                    return Pipetting_Imbibition(count, 1);
                 }
                 //else
                 //{
@@ -1935,17 +1924,17 @@ namespace PipettingCode.Views
                     DisplayMessage("脱针移动X轴失败");
 
                     int tryCount = 0;
-                    while ((tryCount++)<5 )
+                    while ((tryCount++) < 5)
                     {
                         result = mTCPUDP_Common.cmd_SamplingarmPointtopointmotionToNeedleRemoval_X_AxisPosition(mCommData);                    //X轴移到脱针位置坐标
-                        if (result==0)
+                        if (result == 0)
                         {
                             DisplayMessage("脱针移动X轴成功");
                             return result;
                         }
                         DisplayMessage("脱针移动X轴失败");
                     }
-                    
+
                 }
             }
             catch (Exception ex)
@@ -2048,7 +2037,7 @@ namespace PipettingCode.Views
             return -1;
         }
 
-        public int InjectionAndOffNeedle(int count )
+        public int InjectionAndOffNeedle(int count)
         {
             Task<int> task1 = Task.Run(() =>
             {

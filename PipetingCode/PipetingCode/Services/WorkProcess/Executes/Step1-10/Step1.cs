@@ -21,7 +21,7 @@ namespace PipettingCode.Services
         public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             //调用厂家提供的接口
-            var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel));
+            var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("步骤1：磁珠充分混匀.确保有针头", "换针提示", MessageBoxButton.OKCancel));
             if (res == MessageBoxResult.Cancel)
             {
                 return false;
@@ -41,7 +41,7 @@ namespace PipettingCode.Services
             Global_Parameter.TubersStartY = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadTop;
             Global_Parameter.TubersEndX = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadRight;
             Global_Parameter.TubersEndY = ProcessConfigService.Instance.GetExtendsConfig().MagneticBeadBottom;
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
             {
                 if (i == 0)
                 {

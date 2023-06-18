@@ -18,7 +18,7 @@ namespace PipettingCode.Services
             Console.WriteLine($"样本孔加入{configItem.Capacity}ul磁珠");
             var res = await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
+                return MessageBox.Show($"步骤2：样本孔加入{configItem.Capacity}ul磁珠.确保有针头", "换针提示", MessageBoxButton.OKCancel);
 
             });
 
@@ -38,11 +38,12 @@ namespace PipettingCode.Services
                 PipettingViewModel.Instance.TakeNeedle(i);
 
                 //吸液
-                PipettingViewModel.Instance.Imbibition(i);
+                PipettingViewModel.Instance.Imbibition(i, (int)config.MagneticBeadCapacity);
                 // 吐液
                 PipettingViewModel.Instance.Injection(i);
 
                 //步骤三的操作
+                Console.WriteLine("步骤3：上下吸打10次以上达到充分混匀");
                 for (int j = 0; j < 2; j++)
                 {
                     PipettingViewModel.Instance.Pipetting_Imbibition(i);//当前位置吸液

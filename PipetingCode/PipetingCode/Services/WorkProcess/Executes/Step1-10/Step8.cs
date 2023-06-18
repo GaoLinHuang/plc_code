@@ -13,12 +13,14 @@ namespace PipettingCode.Services
 {
     internal class Step8 : IExecute
     {
+        protected virtual string Prefix { get; } = "步骤8：";
+
         public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             Console.WriteLine("加入200ul乙醇，静置30S");
             var res = await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
+                return MessageBox.Show($"{Prefix}加入200ul乙醇，静置30S.确保有针头", "换针提示", MessageBoxButton.OKCancel);
 
             });
 
@@ -38,9 +40,9 @@ namespace PipettingCode.Services
                 PipettingViewModel.Instance.TakeNeedle(i);
 
                 //吸液
-                PipettingViewModel.Instance.Imbibition(i);
+                PipettingViewModel.Instance.Imbibition(i,(int)config.EthanolCapacityFirst);
                 // 吐液
-                PipettingViewModel.Instance.Injection(i);
+                PipettingViewModel.Instance.Injection(i,1);//磁力板位置设置成1
 
                 //脱针
                 PipettingViewModel.Instance.OffNeedle(0);

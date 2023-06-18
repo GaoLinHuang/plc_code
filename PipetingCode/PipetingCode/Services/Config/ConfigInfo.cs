@@ -39,6 +39,12 @@ namespace PipettingCode.Services.Config
         /// 洗脱剂混匀次数
         /// </summary>
         public int WashBeadTimes { get; set; }
+
+        /// <summary>
+        /// 凉干时间
+        /// </summary>
+        public double DryByAiringTime { get; set; }
+
         /// <summary>
         /// 乙醇量1
         /// </summary>

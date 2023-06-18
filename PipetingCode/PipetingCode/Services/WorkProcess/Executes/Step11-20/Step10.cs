@@ -9,6 +9,7 @@ namespace PipettingCode.Services
 {
     internal class Step10 : Step8
     {
+        protected override string Prefix { get; } = "步骤10";
         //public Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         //{
         //    Console.WriteLine("加入200ul乙醇，静置30S");

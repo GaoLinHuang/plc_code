@@ -15,10 +15,10 @@ namespace PipettingCode.Services
     {
         public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
-            Console.WriteLine("加入27.5ul洗脱液");
+            Console.WriteLine($"步骤15：加入{config.WashCapacityFirst}ul洗脱液");
             var res = await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                return MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel);
+                return MessageBox.Show($"步骤15：加入{config.WashCapacityFirst}ul洗脱液.确保有针头", "换针提示", MessageBoxButton.OKCancel);
 
             });
 
@@ -38,17 +38,18 @@ namespace PipettingCode.Services
                 PipettingViewModel.Instance.TakeNeedle(i);
 
                 //吸液
-                PipettingViewModel.Instance.Imbibition(i);
+                PipettingViewModel.Instance.Imbibition(i,(int)config.WashCapacityFirst);//洗脱液
                 // 吐液
                 PipettingViewModel.Instance.Injection(i);
 
+                Console.WriteLine("步骤16：上下吸打10次以上达到充分混匀");
                 //步骤16
                 for (int j = 0; j < config.SampleBeadTimes; j++)
                 {
                     //吸液
                     PipettingViewModel.Instance.Pipetting_Imbibition(i);
                     // 吐液
-                    PipettingViewModel.Instance.Pipetting_Initial(i);
+                    PipettingViewModel.Instance.Pipetting_Injection(i);
                 }
                 //脱针
                 PipettingViewModel.Instance.OffNeedle(0);

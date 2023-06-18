@@ -10,7 +10,99 @@ using Windows.Base;
 
 namespace PipettingCode.Views
 {
-    internal class PipeService : NotifyBase
+
+
+    public class TCPUDP_CommonExtend: TCPUDP_Common
+    {
+    public int cmd_Injection_AllNotReset(Tcp_CommData mCommData, Class_ImbibitionParameter mParameter)
+    {
+        int num1 = -1;
+        DateTime now = DateTime.Now;
+        int mRinseDelayTime = mCommData.mRinseDelayTime;
+        byte[] numArray = new byte[17];
+        try
+        {
+            mCommData.mMoveInterval = (Global_Parameter.SampleEndY[0] - Global_Parameter.SampleStartY[0]) / 7;
+            mParameter.m_InjectionNun = mParameter.m_Liquidinjectiontimes <= mParameter.m_Numberoftimes + 1 ? 0 : 1;
+            for (int InChannelNo = 0; InChannelNo < mParameter.mSamplesize; ++InChannelNo)
+            {
+                if (mCommData.mEnableFlag[InChannelNo] == 1)
+                    mParameter.mInjectionPumpSpace1[InChannelNo] = (float)(mParameter.m_Liquidinjectiontimes - mParameter.m_Numberoftimes - 1) * this.Get_InjectionVol(mParameter.mInjectionPumpSpace, InChannelNo);
+            }
+            mCommData.mMoveTargetZ = Global_Parameter.SampleMoveZ[mCommData.NeedleNo];
+            mCommData.mDistance = mParameter.mInjectionHeight;
+            num1 = this.cmd_SamplingarmAllZaxisMove_Zdtd(mCommData);
+            if (num1 != 0)
+            {
+                "cmd_Injection_All 5.下降到一个绝对位置1失败".SaveLog("TCPdata");
+            }
+            else
+            {
+                for (int index = 0; index < mParameter.mSamplesize && !this.ReceiveMsg_Flag; ++index)
+                {
+                    if (mCommData.mEnableFlag[index] != 0)
+                    {
+                        float num2 = mParameter.m_InjectionNun != 1 ? (float)Global_Parameter.SysXyxtkq : (float)Global_Parameter.SysXyxtkq + mParameter.mInjectionPumpSpace1[index] + (float)mParameter.mNeedleTailGap;
+                        if ((double)num2 < 0.0)
+                            num2 = 0.0f;
+                        mCommData.mDistance = (int)((double)num2 * 10.0);
+                        mCommData.mPlungerDistance[index] = mCommData.mDistance;
+                    }
+                }
+                mCommData.mFC2 = (byte)144;
+                mCommData.mSpeed = mParameter.mInjectionPumpSpeed;
+                mCommData.mACCSpeed = mParameter.mInjectionPumpAccSpeed;
+                num1 = this.cmd_SamplingarmAllPaxisMove_Zdtd(mCommData);
+                if (num1 != 0)
+                {
+                    "cmd_Injection_All 9.注液失败".SaveLog("TCPdata");
+                }
+                else
+                {
+                    Thread.Sleep(mParameter.mInjectionDelay);
+                    for (int index = 0; index < mParameter.mSamplesize && !this.ReceiveMsg_Flag; ++index)
+                    {
+                        if (mCommData.mEnableFlag[index] != 0)
+                        {
+                            float num3 = mParameter.m_InjectionNun != 1 ? (float)(Global_Parameter.SysXyxtkq + mParameter.mNeedleTailGap + mParameter.mTipGap) : (float)(Global_Parameter.SysXyxtkq + mParameter.mNeedleTailGap) + mParameter.mInjectionPumpSpace1[index] + (float)mParameter.mTipGap;
+                            mCommData.mDistance = (int)num3 * 10;
+                            mCommData.mPlungerDistance[index] = mCommData.mDistance;
+                        }
+                    }
+                    mCommData.mFC2 = (byte)144;
+                    mCommData.mSpeed = mParameter.mInjectionPumpSpeed;
+                    mCommData.mACCSpeed = mParameter.mInjectionPumpAccSpeed;
+                    num1 = this.cmd_SamplingarmAllPaxisMove_Zdtd(mCommData);
+                    if (num1 != 0)
+                    {
+                        "cmd_Injection_All 18.吸取针尖空气失败！".SaveLog("TCPdata");
+                    }
+                    else
+                    {
+                        mCommData.mDistance = mParameter.mInjectionZSpace;
+                        num1 = this.cmd_SamplingarmAllZaxisMove_Zdtd(mCommData);
+                        if (num1 != 0)
+                            "cmd_Injection_All 5.下降到一个绝对位置1失败".SaveLog("TCPdata");
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            ("cmd_Injection_All 21.errors:StackTrace-->" + ex.StackTrace + "\n" + ex.Message).SaveLog("TCPdata");
+        }
+        //if (num1 != 0)
+        //{
+        //    mCommData.mDistance = 0;
+        //    this.cmd_SamplingarmAllZaxisMove(mCommData);
+        //}
+        //if (num1 != 0)
+        //    "cmd_Injection_All 22.多通道注液失败".SaveLog("TCPdata");
+        return num1;
+    }
+
+}
+internal class PipeService : NotifyBase
     {
         private TCPUDP_Common mTCPUDP_Common = new TCPUDP_Common();
         private Tcp_CommData mCommData = new Tcp_CommData();

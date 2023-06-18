@@ -12,10 +12,11 @@ namespace PipettingCode.Services
 {
     internal class Step9 : IExecute
     {
+        protected virtual string Prefix { get; } = "步骤8：";
         public async Task<bool> ExecuteAsync(ConfigInfoItem configItem, ConfigInfo config)
         {
             Console.WriteLine("吸取澄清液，丢弃废液及枪头");
-            var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel));
+            var res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show($"{Prefix}:吸取澄清液，丢弃废液及枪头.确保有针头", "换针提示", MessageBoxButton.OKCancel));
             if (res == MessageBoxResult.Cancel)
             {
                 return false;
@@ -26,10 +27,10 @@ namespace PipettingCode.Services
             //吸干
             while (true)
             {
-                res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("继续进行吸干操作吗", "吸干提示", MessageBoxButton.OKCancel));
+                res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show($"{Prefix}:吸取澄清液，丢弃废液及枪头.继续进行吸干操作吗", "吸干提示", MessageBoxButton.OKCancel));
                 var needRepeat = res == MessageBoxResult.OK;
                 if (!needRepeat) break;
-                res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show("确保有针头", "换针提示", MessageBoxButton.OKCancel));
+                res = await Application.Current.Dispatcher.InvokeAsync(() => MessageBox.Show($"{Prefix}:吸取澄清液，丢弃废液及枪头.确保有针头", "换针提示", MessageBoxButton.OKCancel));
                 if (res == MessageBoxResult.Cancel)
                 {
                     return false;

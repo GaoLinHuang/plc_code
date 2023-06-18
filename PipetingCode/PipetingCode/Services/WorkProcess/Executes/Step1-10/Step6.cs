@@ -14,7 +14,7 @@ namespace PipettingCode.Services
         {
             return await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var messageBoxResult = MessageBox.Show("磁力板上静置至液体澄清", "确认", MessageBoxButton.OKCancel);
+                var messageBoxResult = MessageBox.Show("步骤6：磁力板上静置至液体澄清（>3min）", "确认", MessageBoxButton.OKCancel);
                 return messageBoxResult == MessageBoxResult.OK;
             });
         }

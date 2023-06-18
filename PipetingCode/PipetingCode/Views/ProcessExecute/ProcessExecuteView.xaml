@@ -44,7 +44,7 @@
 
         </Style>
     </UserControl.Resources>
-   <Border>
+    <Border>
         <StackPanel Orientation="Horizontal">
             <StackPanel>
                 <TextBlock Text="纯化流程"></TextBlock>
@@ -91,11 +91,18 @@
                         <TextBlock Text="ul"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="洗脱剂混匀次数:"/>
-                    <TextBox Text="{Binding SelectItem.WashBeadTimes}" Width="100"></TextBox>
-                    <TextBlock Text="次"></TextBlock>
+                        <TextBlock Text="洗脱剂混匀次数:"/>
+                        <TextBox Text="{Binding SelectItem.WashBeadTimes}" Width="100"></TextBox>
+                        <TextBlock Text="次"></TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="凉干时间:"/>
+                        <TextBox Text="{Binding SelectItem.DryByAiringTime}" Width="100"></TextBox>
+                        <TextBlock Text="min"></TextBlock>
+                    </StackPanel>
+
                 </StackPanel>
-            </StackPanel>
 
 
             </StackPanel>

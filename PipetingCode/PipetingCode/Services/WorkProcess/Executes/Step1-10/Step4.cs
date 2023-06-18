@@ -17,7 +17,7 @@ namespace PipettingCode.Services
             
             return await Application.Current.Dispatcher.InvokeAsync(() =>
             {
-                var messageBoxResult = MessageBox.Show("等待确认", "确认", MessageBoxButton.OKCancel);
+                var messageBoxResult = MessageBox.Show("步骤4：室温静置5min.等待确认", "确认", MessageBoxButton.OKCancel);
                 return messageBoxResult == MessageBoxResult.OK;
             });
         }
