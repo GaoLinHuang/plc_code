@@ -17,6 +17,6 @@
         /// 孔板遍历数
         /// </summary>
 
-        public static int OrificePlateErgodicCount = OrificePlateCount / NeedleCount;
+        public static int OrificePlateErgodicCount =2;
     }
 }
