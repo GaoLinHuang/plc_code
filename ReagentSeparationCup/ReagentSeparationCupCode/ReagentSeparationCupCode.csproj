@@ -1,0 +1,97 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="image\8联管.png" />
+    <None Remove="image\bg.png" />
+    <None Remove="image\btn_admin copy.png" />
+    <None Remove="image\btn_power.png" />
+    <None Remove="image\Combined Shape.png" />
+    <None Remove="image\Experimenting.png" />
+    <None Remove="image\ExperimentPreparing.png" />
+    <None Remove="image\ExperimentWarnning.png" />
+    <None Remove="image\GetExperimentResult.png" />
+    <None Remove="image\ic_warning copy.png" />
+    <None Remove="image\ic_warning.png" />
+    <None Remove="image\jqrlogo.png" />
+    <None Remove="image\Logo.png" />
+    <None Remove="image\logo_top.png" />
+    <None Remove="image\page.png" />
+    <None Remove="image\Password.png" />
+    <None Remove="image\settings.png" />
+    <None Remove="image\ShiGuanJia.png" />
+    <None Remove="image\tab1.png" />
+    <None Remove="image\tab2.png" />
+    <None Remove="image\tab3.png" />
+    <None Remove="image\tip头.png" />
+    <None Remove="image\User.png" />
+    <None Remove="image\停止.png" />
+    <None Remove="image\关机.png" />
+    <None Remove="image\初始化.png" />
+    <None Remove="image\回位.png" />
+    <None Remove="image\孔数16.png" />
+    <None Remove="image\孔数96.png" />
+    <None Remove="image\孔数_ori.png" />
+    <None Remove="image\实验暂停中.png" />
+    <None Remove="image\开始继续.png" />
+    <None Remove="image\推出 copy.png" />
+    <None Remove="image\推出.png" />
+    <None Remove="image\暂停.png" />
+    <None Remove="image\样本状态.png" />
+    <None Remove="image\消毒.png" />
+    <None Remove="image\试管_ori.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Configuraion\" />
+    <Folder Include="Views\Experiment\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="image\8联管.png" />
+    <Resource Include="image\bg.png" />
+    <Resource Include="image\btn_admin copy.png" />
+    <Resource Include="image\btn_power.png" />
+    <Resource Include="image\Combined Shape.png" />
+    <Resource Include="image\Experimenting.png" />
+    <Resource Include="image\ExperimentPreparing.png" />
+    <Resource Include="image\ExperimentWarnning.png" />
+    <Resource Include="image\GetExperimentResult.png" />
+    <Resource Include="image\ic_warning copy.png" />
+    <Resource Include="image\ic_warning.png" />
+    <Resource Include="image\jqrlogo.png" />
+    <Resource Include="image\Logo.png" />
+    <Resource Include="image\logo_top.png" />
+    <Resource Include="image\page.png" />
+    <Resource Include="image\Password.png" />
+    <Resource Include="image\settings.png" />
+    <Resource Include="image\ShiGuanJia.png" />
+    <Resource Include="image\tab1.png" />
+    <Resource Include="image\tab2.png" />
+    <Resource Include="image\tab3.png" />
+    <Resource Include="image\tip头.png" />
+    <Resource Include="image\User.png" />
+    <Resource Include="image\停止.png" />
+    <Resource Include="image\关机.png" />
+    <Resource Include="image\初始化.png" />
+    <Resource Include="image\回位.png" />
+    <Resource Include="image\孔数16.png" />
+    <Resource Include="image\孔数96.png" />
+    <Resource Include="image\孔数_ori.png" />
+    <Resource Include="image\实验暂停中.png" />
+    <Resource Include="image\开始继续.png" />
+    <Resource Include="image\推出 copy.png" />
+    <Resource Include="image\推出.png" />
+    <Resource Include="image\暂停.png" />
+    <Resource Include="image\样本状态.png" />
+    <Resource Include="image\消毒.png" />
+    <Resource Include="image\试管_ori.png" />
+  </ItemGroup>
+
+</Project>
