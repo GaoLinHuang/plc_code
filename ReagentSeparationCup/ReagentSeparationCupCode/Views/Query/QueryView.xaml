@@ -1,57 +1,52 @@
 ﻿<UserControl x:Class="ReagentSeparationCupCode.Views.QueryView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ReagentSeparationCupCode.Views"
-             mc:Ignorable="d"
-             >
+             mc:Ignorable="d">
     <Grid Margin="2" Width="1500" Height="{StaticResource Height_Main}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="80"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="80" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
         </Grid.RowDefinitions>
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition />
+                <ColumnDefinition />
             </Grid.ColumnDefinitions>
             <TextBlock Text="结果查询" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="20" FontSize="20" FontWeight="Bold"></TextBlock>
 
             <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="20 0" Height="40" Width="120">结果查询</Button>
         </Grid>
 
-
         <DataGrid Style="{StaticResource StyleConfigDataGrid}" ItemsSource="{Binding CurrentSearch}" SelectedIndex="{Binding SelectedIndex}" Grid.Row="1" Margin="9" ScrollViewer.CanContentScroll="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="批次" Width="100" Binding="{Binding No}"/>
-                <DataGridTextColumn Header="实验时间" Width="*" Binding="{Binding Time}"/>
-                <DataGridTextColumn Header="操作" Width="150" Binding="{Binding Type}"/>
+                <DataGridTextColumn Header="批次" Width="100" Binding="{Binding No}" />
+                <DataGridTextColumn Header="实验时间" Width="*" Binding="{Binding Time}" />
+                <DataGridTextColumn Header="操作" Width="150" Binding="{Binding Type}" />
             </DataGrid.Columns>
         </DataGrid>
 
-
-
         <DockPanel Grid.Row="2" LastChildFill="False">
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Left">
-                <Button Style="{StaticResource ButtonStyle}" x:Name="previous"  Grid.Column="0" Content="&lt;"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="first"  Grid.Column="1" Content="1"/>
-                <TextBlock x:Name="andSoOn1" Text="....." Grid.Column="5" Style="{DynamicResource TextBlockStyle2}" Visibility="{Binding AndSoOn1Visibility}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="second" Grid.Column="2" Content="{Binding SecondText}" Visibility="{Binding SecondVisibility}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="third"  Grid.Column="3" Content="{Binding ThridText}" Visibility="{Binding ThridVisibility}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="fourth"  Grid.Column="4" Content="{Binding FourthText}" Visibility="{Binding FourthVisibility}"/>
-                <TextBlock x:Name="andSoOn2" Text="....." Grid.Column="5" Style="{DynamicResource TextBlockStyle2}" Visibility="{Binding AndSoOn2Visibility}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="last"  Grid.Column="6" Content="{Binding LastText}" Visibility="{Binding LastVisibility}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="next"  Grid.Column="7" Content="&gt;"/>
+                <Button Style="{StaticResource ButtonStyle}" x:Name="previous"  Grid.Column="0" Content="&lt;" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="first"  Grid.Column="1" Content="1" />
+                <TextBlock x:Name="andSoOn1" Text="....." Grid.Column="5" Style="{DynamicResource TextBlockStyle2}" Visibility="{Binding AndSoOn1Visibility}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="second" Grid.Column="2" Content="{Binding SecondText}" Visibility="{Binding SecondVisibility}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="third"  Grid.Column="3" Content="{Binding ThridText}" Visibility="{Binding ThridVisibility}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="fourth"  Grid.Column="4" Content="{Binding FourthText}" Visibility="{Binding FourthVisibility}" />
+                <TextBlock x:Name="andSoOn2" Text="....." Grid.Column="5" Style="{DynamicResource TextBlockStyle2}" Visibility="{Binding AndSoOn2Visibility}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="last"  Grid.Column="6" Content="{Binding LastText}" Visibility="{Binding LastVisibility}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="next"  Grid.Column="7" Content="&gt;" />
             </StackPanel>
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-                <TextBlock Text="跳转到" Grid.Column="8" Style="{DynamicResource TextBlockStyle2}"/>
-                <TextBox x:Name="pageNumber" Grid.Column="9" Style="{DynamicResource TextBoxStyle}" Text="{Binding GoToText}"/>
-                <TextBlock Text="页" Grid.Column="10" Style="{DynamicResource TextBlockStyle2}"/>
-                <Button Style="{StaticResource ButtonStyle}" x:Name="goto"  Grid.Column="11" Content="goto" Margin="10,0,0,0"/>
+                <TextBlock Text="跳转到" Grid.Column="8" Style="{DynamicResource TextBlockStyle2}" />
+                <TextBox x:Name="pageNumber" Grid.Column="9" Style="{DynamicResource TextBoxStyle}" Text="{Binding GoToText}" />
+                <TextBlock Text="页" Grid.Column="10" Style="{DynamicResource TextBlockStyle2}" />
+                <Button Style="{StaticResource ButtonStyle}" x:Name="goto"  Grid.Column="11" Content="goto" Margin="10,0,0,0" />
             </StackPanel>
         </DockPanel>
-
     </Grid>
 </UserControl>

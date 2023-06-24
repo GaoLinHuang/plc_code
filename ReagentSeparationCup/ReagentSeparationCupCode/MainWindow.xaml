@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:ReagentSeparationCupCode"
         xmlns:home="clr-namespace:ReagentSeparationCupCode.Views.Home"
         mc:Ignorable="d"
-        Title="MainWindow" 
+        Title="MainWindow"
         WindowState="Maximized"
         WindowStyle="None"
         ResizeMode="NoResize"

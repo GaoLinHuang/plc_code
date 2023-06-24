@@ -1,21 +1,20 @@
 ﻿<UserControl x:Class="ReagentSeparationCupCode.Views.ExitView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:ReagentSeparationCupCode.Views"
-             mc:Ignorable="d" 
-            >
+             mc:Ignorable="d">
     <!--<Grid Width="150" Height="300" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="30,0,0,20">
         <Grid.RowDefinitions>
-            <RowDefinition Height="auto"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>-->
         <!--<Button Grid.Row="0" x:Name="Admin"  Style="{StaticResource ButtonStyle1}" IsEnabled="{Binding CanAdmin}">
-            <Image Source="/ReagentSeparationCupCode;Component/image/btn_admin copy.png"/>
+            <Image Source="/ReagentSeparationCupCode;Component/image/btn_admin copy.png" />
         </Button>-->
         <Button Style="{StaticResource ButtonStyle1}" IsEnabled="{Binding CanPowerOff}">
-            <Image Source="/ReagentSeparationCupCode;Component/image/btn_power.png"/>
+            <Image Source="/ReagentSeparationCupCode;Component/image/btn_power.png" />
         </Button>
     <!--</Grid>-->
 </UserControl>

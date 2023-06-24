@@ -1,7 +1,6 @@
 ﻿<Application x:Class="ReagentSeparationCupCode.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:ReagentSeparationCupCode"
              xmlns:sys="clr-namespace:System;assembly=System.Runtime"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -24,10 +23,10 @@
                     <Brush x:Key="ProcessColor">#16FF00</Brush>
 
                     <Style x:Key="StyleBody" TargetType="Grid">
-                        <Setter Property="Width" Value="auto"/>
-                        <Setter Property="Height" Value="auto"/>
-                        <Setter Property="MinWidth" Value="1000"/>
-                        <Setter Property="MinHeight" Value="600"/>
+                        <Setter Property="Width" Value="auto" />
+                        <Setter Property="Height" Value="auto" />
+                        <Setter Property="MinWidth" Value="1000" />
+                        <Setter Property="MinHeight" Value="600" />
                     </Style>
                     <!--登录页面的宽高-->
                     <sys:Double x:Key="Login_full_Width">1920</sys:Double>
