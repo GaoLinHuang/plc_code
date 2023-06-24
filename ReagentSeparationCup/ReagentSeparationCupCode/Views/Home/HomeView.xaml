@@ -17,7 +17,7 @@
                 </TabItem.Header>
                 <!--内容区域-->
                 <TabItem.Content>
-                    <views:ExperimentView></views:ExperimentView>
+                    <views:ExperimentView HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10"></views:ExperimentView>
                     <!--<Grid Margin="0,15,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="10*"/>

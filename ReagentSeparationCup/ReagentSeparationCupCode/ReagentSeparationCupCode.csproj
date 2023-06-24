@@ -53,6 +53,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\PipetingCode\Windows.Base\Windows.Base.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="image\8联管.png" />
     <Resource Include="image\bg.png" />
     <Resource Include="image\btn_admin copy.png" />

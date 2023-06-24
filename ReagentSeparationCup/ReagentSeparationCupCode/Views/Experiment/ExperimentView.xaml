@@ -6,23 +6,20 @@
              xmlns:local="clr-namespace:ReagentSeparationCupCode.Views"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext>
+        <local:ExperimentViewModel/>
+    </UserControl.DataContext>
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition></ColumnDefinition>
             <ColumnDefinition Width="80"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-                <RowDefinition></RowDefinition>
-            </Grid.RowDefinitions>
-            <local:ExperimentItemView Grid.Row="0" Margin="10,30"></local:ExperimentItemView>
-            <local:ExperimentItemView Grid.Row="1"  Margin="10,30"></local:ExperimentItemView>
-            <local:ExperimentItemView Grid.Row="2"  Margin="10,30" ></local:ExperimentItemView>
-            <local:ExperimentItemView Grid.Row="3"  Margin="10,30"></local:ExperimentItemView>
-        </Grid>
+        <ItemsControl ItemsSource="{Binding ExperimentItems}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <local:ExperimentItemView Margin="10, 30"></local:ExperimentItemView>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>
