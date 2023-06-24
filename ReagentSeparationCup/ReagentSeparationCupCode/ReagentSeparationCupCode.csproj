@@ -50,7 +50,6 @@
 
   <ItemGroup>
     <Folder Include="Views\Configuraion\" />
-    <Folder Include="Views\Experiment\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ReagentSeparationCupCode.Views.Home"
              xmlns:views="clr-namespace:ReagentSeparationCupCode.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="900">
     <Grid Background="Aqua">
 
 
@@ -17,7 +17,8 @@
                 </TabItem.Header>
                 <!--内容区域-->
                 <TabItem.Content>
-                    <Grid Margin="0,15,0,0">
+                    <views:ExperimentView></views:ExperimentView>
+                    <!--<Grid Margin="0,15,0,0">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="10*"/>
                             <ColumnDefinition Width="0.7*"/>
@@ -72,7 +73,7 @@
                                 <Image Source="/ReagentSeparationCupCode;Component/image/推出 copy.png" Style="{DynamicResource ImageStyle2}"/>
                             </Button>
                         </Grid>
-                    </Grid>
+                    </Grid>-->
                 </TabItem.Content>
             </TabItem>
             <TabItem Style="{StaticResource TabItemStyle}">
