@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Business.Core;
+using System.Windows;
 
 namespace ReagentSeparationCupCode
 {
@@ -10,6 +11,12 @@ namespace ReagentSeparationCupCode
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            ProviderManager.PlcManager.StartConnectAsync();
         }
     }
 }
