@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Media.Imaging;
 
-namespace Business.Core.Plc
+namespace Business.Core
 {
     public class PlcManager
     {
         private static readonly object _locker = new object();
+        //private SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1);
         public event Action OnConnected;
         public event Action OnDisconnected;
 
         #region 串口
 
-        private SerialPort _serialPort = new SerialPort();
+        private readonly SerialPort _serialPort = new SerialPort();
 
         #endregion
 
@@ -52,7 +54,11 @@ namespace Business.Core.Plc
                 {
                     try
                     {
-                        _serialPort.Open();
+                       
+                        lock (_locker)
+                        {
+                            _serialPort.Open();
+                        }
                         IsConnectedTask = true;
                         OnConnected?.Invoke();
                     }
@@ -60,7 +66,6 @@ namespace Business.Core.Plc
                     {
                         IsConnectedTask = false;
                     }
-
                     await Task.Delay(3000);
                     Console.WriteLine("尝试重连...");
                 }

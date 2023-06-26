@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Business.Core
@@ -18,5 +19,9 @@ namespace Business.Core
             return Task.CompletedTask;
         }
 
+        public List<ScanInfo> GetScanInfos()
+        {
+            return new List<ScanInfo>();
+        }
     }
 }

@@ -49,4 +49,7 @@
 		<PackageReference Include="RestSharp" Version="110.2.0" />
 		<PackageReference Include="System.IO.Ports" Version="6.0.0" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Config\" />
+	</ItemGroup>
 </Project>

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Core.Printer
+namespace Business.Core
 {
     public interface IPrinter
     {
@@ -25,31 +25,5 @@ namespace Business.Core.Printer
         /// </summary>
         /// <returns></returns>
         Task DisConnectAsync();
-    }
-
-    public class PrintInfo
-    {
-
-    }
-    public class Printer : IPrinter
-    {
-        public Printer()
-        {
-
-        }
-        public Task ConnectAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task PrintAsync(PrintInfo printInfo)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task DisConnectAsync()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

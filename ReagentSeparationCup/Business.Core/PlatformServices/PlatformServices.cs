@@ -36,5 +36,18 @@ namespace Business.Core
             }
         }
 
+        /// <summary>
+        /// post请求
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public async Task<Result<T>> PostAsync<T>()
+        {
+            using (RestClient client = new RestClient(_baseUrl))
+            {
+                var request = new RestRequest("Assets/LargeFile.7z");
+                return await client.PostAsync<Result<T>>(request);
+            }
+        }
     }
 }
